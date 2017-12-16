@@ -53,4 +53,4 @@
         android:background="@color/colorAccent"
         android:text="Login"
         android:textColor="@android:color/background_light" />
-</>
+</RelativeLayout>
