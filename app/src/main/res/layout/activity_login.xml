@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/username"
         android:layout_below="@+id/username"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:gravity="center_horizontal"
         android:hint="Password"
@@ -43,14 +43,26 @@
         android:textColor="@android:color/background_light"
         android:textColorHint="@android:color/darker_gray" />
 
-    <Button
-        android:id="@+id/login"
+    <CheckBox
+        android:id="@+id/rememberme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="20dp"
+        android:buttonTint="@android:color/background_light"
+        android:text="CheckBox"
+        android:textColor="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rememberme"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:background="@color/colorAccent"
         android:text="Login"
         android:textColor="@android:color/background_light" />
+
 </RelativeLayout>

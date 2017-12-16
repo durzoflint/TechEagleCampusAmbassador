@@ -2,12 +2,14 @@ package techeagle.in.tcap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,19 +20,38 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
-
+    boolean savelogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        final EditText username = findViewById(R.id.username);
+        final EditText password = findViewById(R.id.password);
+        final CheckBox rememberpasswordbox=(CheckBox)findViewById(R.id.rememberme);
+        SharedPreferences loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        final SharedPreferences.Editor loginPrefsEditor = loginPreferences.edit();
+        savelogin = loginPreferences.getBoolean("savelogin", false);
+        if(savelogin)
+        {
+            username.setText(loginPreferences.getString("id",""));
+            password.setText(loginPreferences.getString("password",""));
+            rememberpasswordbox.setChecked(true);
+        }
         Button login = findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText username = findViewById(R.id.username);
-                EditText password = findViewById(R.id.password);
                 String id = username.getText().toString();
                 String pass = password.getText().toString();
+                if (rememberpasswordbox.isChecked()) {
+                    loginPrefsEditor.putBoolean("savelogin", true);
+                    loginPrefsEditor.putString("id", id);
+                    loginPrefsEditor.putString("password", pass);
+                    loginPrefsEditor.apply();
+                } else {
+                    loginPrefsEditor.clear();
+                    loginPrefsEditor.commit();
+                }
                 new Login().execute(id, pass);
             }
         });

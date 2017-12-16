@@ -21,13 +21,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
-    String name = "Default";
+    String name = "Your name comes here";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Intent i = getIntent();
         name = i.getStringExtra("Name");
+        TextView nameLabel = findViewById(R.id.name);
+        nameLabel.setText("Name : " + name);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
