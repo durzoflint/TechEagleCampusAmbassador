@@ -97,6 +97,9 @@ public class FragmentTasksClass extends Fragment{
                     String stages = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
+                    String completed = webPage.substring(0, brI);
+                    webPage = webPage.substring(brI + 4);
+                    brI = webPage.indexOf("<br>");
                     String rewardPoints = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br><br>");
@@ -115,9 +118,10 @@ public class FragmentTasksClass extends Fragment{
                     LinearLayout mid = new LinearLayout(context);
                     mid.setLayoutParams(matchParams);
                     mid.setOrientation(LinearLayout.VERTICAL);
+                    mid.setPadding(0,20,0,20);
                     TextView nameLabel = new TextView(context);
                     nameLabel.setText(name);
-                    nameLabel.setTextSize(20);
+                    nameLabel.setTextSize(24);
                     nameLabel.setGravity(Gravity.CENTER);
                     mid.addView(nameLabel);
                     final int id = View.generateViewId();
@@ -131,11 +135,11 @@ public class FragmentTasksClass extends Fragment{
                     deadlineLabel.setTextSize(20);
                     deadlineLabel.setGravity(Gravity.CENTER);
                     inner.addView(deadlineLabel);
-                    TextView stagesLabel = new TextView(context);
-                    stagesLabel.setText("Stages : " + stages);
-                    stagesLabel.setTextSize(20);
-                    stagesLabel.setGravity(Gravity.CENTER);
-                    inner.addView(stagesLabel);
+                    TextView completedLabel = new TextView(context);
+                    completedLabel.setText("Completed : " + completed + "/" + stages);
+                    completedLabel.setTextSize(20);
+                    completedLabel.setGravity(Gravity.CENTER);
+                    inner.addView(completedLabel);
                     TextView rewardPointsLabel = new TextView(context);
                     rewardPointsLabel.setText("Reward Points : " + rewardPoints);
                     rewardPointsLabel.setTextSize(20);
