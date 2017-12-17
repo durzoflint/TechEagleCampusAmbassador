@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -32,6 +33,13 @@ public class FragmentTasksClass extends Fragment{
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         new FetchTasks().execute();
+        FloatingActionButton sync = rootView.findViewById(R.id.sync);
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FetchTasks().execute();
+            }
+        });
         return rootView;
     }
     private class FetchTasks extends AsyncTask<Void,Void,Void> {
@@ -75,6 +83,8 @@ public class FragmentTasksClass extends Fragment{
             progressDialog.dismiss();
             if(webPage.contains("<br>"))
             {
+                LinearLayout data = rootView.findViewById(R.id.data);
+                data.removeAllViews();
                 while (webPage.contains("<br>"))
                 {
                     int brI = webPage.indexOf("<br>");
@@ -96,11 +106,10 @@ public class FragmentTasksClass extends Fragment{
                     Context context = getActivity();
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
-                    LinearLayout data = rootView.findViewById(R.id.data);
                     LinearLayout outer = new LinearLayout(context);
                     outer.setLayoutParams(matchParams);
                     outer.setOrientation(LinearLayout.VERTICAL);
-                    outer.setPadding(0,15,0,15);
+                    outer.setPadding(0,0,0,30);
                     CardView cardView = new CardView(context);
                     cardView.setLayoutParams(matchParams);
                     LinearLayout mid = new LinearLayout(context);
