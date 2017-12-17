@@ -71,7 +71,9 @@ public class LoginActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                url = new URL(handleSpaces(baseUrl+"login.php?username="+strings[0]+"&password="+strings[1]));
+                String myURL = baseUrl+"login.php?username="+strings[0]+"&password="+strings[1];
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 String data;
@@ -107,17 +109,5 @@ public class LoginActivity extends AppCompatActivity {
             else
                 Toast.makeText(LoginActivity.this, "Username or Password incorrect.", Toast.LENGTH_LONG).show();
         }
-    }
-    String handleSpaces(String s){
-        String x="";
-        for(int i=0;i<s.length();i++)
-        {
-            char ch= s.charAt(i);
-            if(ch==' ')
-                x=x+"%20";
-            else
-                x=x+ch;
-        }
-        return x;
     }
 }

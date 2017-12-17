@@ -51,7 +51,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:buttonTint="@android:color/background_light"
-        android:text="CheckBox"
+        android:text="Remember Me"
         android:textColor="@android:color/background_light" />
 
     <Button
