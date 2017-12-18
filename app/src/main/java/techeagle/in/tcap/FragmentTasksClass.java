@@ -13,7 +13,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,7 +137,7 @@ public class FragmentTasksClass extends Fragment{
                     deadlineLabel.setTextSize(20);
                     deadlineLabel.setGravity(Gravity.CENTER);
                     inner.addView(deadlineLabel);
-                    TextView completedLabel = new TextView(context);
+                    final TextView completedLabel = new TextView(context);
                     completedLabel.setText("Completed : " + completed + "/" + stages);
                     completedLabel.setTextSize(20);
                     completedLabel.setGravity(Gravity.CENTER);
@@ -150,6 +152,45 @@ public class FragmentTasksClass extends Fragment{
                     detailsLabel.setTextSize(20);
                     detailsLabel.setGravity(Gravity.CENTER);
                     inner.addView(detailsLabel);
+                    final int com[] = new int[1];
+                    com[0] = Integer.parseInt(completed);
+                    final int stage = Integer.parseInt(stages);
+                    if(com[0] < stage)
+                    {
+                        final LinearLayout buttons = new LinearLayout(context);
+                        buttons.setOrientation(LinearLayout.HORIZONTAL);
+                        buttons.setLayoutParams(matchParams);
+                        LinearLayout.LayoutParams wrapParams = new LinearLayout.LayoutParams
+                                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+                        wrapParams.gravity = Gravity.CENTER_HORIZONTAL;
+                        Button completedOne = new Button(context);
+                        completedOne.setLayoutParams(wrapParams);
+                        completedOne.setText("Completed One");
+                        buttons.addView(completedOne);
+                        Button completedAll = new Button(context);
+                        completedAll.setLayoutParams(wrapParams);
+                        completedAll.setText("Completed All");
+                        completedOne.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Run Script to add one completed stage for the user
+                                com[0]++;
+                                completedLabel.setText("Completed : " + com[0] + "/" + stage);
+                                if (com[0] == stage)
+                                    buttons.setVisibility(View.GONE);
+                            }
+                        });
+                        completedAll.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Run Script to add one completed stage for the user
+                                completedLabel.setText("Completed : " + stage + "/" + stage);
+                                buttons.setVisibility(View.GONE);
+                            }
+                        });
+                        buttons.addView(completedAll);
+                        inner.addView(buttons);
+                    }
                     mid.addView(inner);
                     cardView.addView(mid);
                     outer.addView(cardView);
