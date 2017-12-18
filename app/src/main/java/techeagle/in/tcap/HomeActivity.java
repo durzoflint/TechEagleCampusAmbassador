@@ -22,12 +22,14 @@ import android.widget.TextView;
 
 public class HomeActivity extends AppCompatActivity {
     String name = "Your name comes here";
+    static String username = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Intent i = getIntent();
         name = i.getStringExtra("Name");
+        username = i.getStringExtra("Username");
         TextView nameLabel = findViewById(R.id.name);
         nameLabel.setText("Name : " + name);
         Toolbar toolbar = findViewById(R.id.toolbar);

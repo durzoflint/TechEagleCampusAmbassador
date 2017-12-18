@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
+    String id;
     boolean savelogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = username.getText().toString();
+                id = username.getText().toString();
                 String pass = password.getText().toString();
                 if (rememberpasswordbox.isChecked()) {
                     loginPrefsEditor.putBoolean("savelogin", true);
@@ -104,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 webPage = webPage.substring(brI+4);
                 Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                 i.putExtra("Name",name);
+                i.putExtra("Username", id);
                 startActivity(i);
             }
             else

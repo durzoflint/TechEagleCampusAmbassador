@@ -2,11 +2,13 @@ package techeagle.in.tcap;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,21 +33,23 @@ import java.net.URL;
  */
 
 public class FragmentTasksClass extends Fragment{
-        View rootView;
+    View rootView;
+    String username = HomeActivity.username;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
-        new FetchTasks().execute();
+        new FetchTasks().execute(username);
         FloatingActionButton sync = rootView.findViewById(R.id.sync);
         sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FetchTasks().execute();
+                new FetchTasks().execute(username);
             }
         });
         return rootView;
     }
-    private class FetchTasks extends AsyncTask<Void,Void,Void> {
+    private class FetchTasks extends AsyncTask<String,Void,Void> {
+        Context context = getActivity();
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/";
         ProgressDialog progressDialog;
@@ -54,12 +59,12 @@ public class FragmentTasksClass extends Fragment{
             super.onPreExecute();
         }
         @Override
-        protected Void doInBackground(Void... voids){
+        protected Void doInBackground(String... strings){
             URL url;
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"fetchtasks.php";
+                String myURL = baseUrl+"fetchtasks.php?username=" + strings[0];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -93,6 +98,9 @@ public class FragmentTasksClass extends Fragment{
                     String name = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
+                    final String taskid = webPage.substring(0, brI);
+                    webPage = webPage.substring(brI + 4);
+                    brI = webPage.indexOf("<br>");
                     String deadline = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
@@ -108,7 +116,9 @@ public class FragmentTasksClass extends Fragment{
                     String details = webPage.substring(0, brI);
                     details = details.replaceAll("<br />", "\n");
                     webPage = webPage.substring(brI + 8);
-                    Context context = getActivity();
+
+                    Log.d("Abhinav", name+"\n"+taskid+"\n"+deadline+"\n"+stages+"\nCompleted : "+completed+"\n"+rewardPoints+"\n"+details+"\n");
+
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
@@ -173,19 +183,39 @@ public class FragmentTasksClass extends Fragment{
                         completedOne.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                //Run Script to add one completed stage for the user
-                                com[0]++;
-                                completedLabel.setText("Completed : " + com[0] + "/" + stage);
-                                if (com[0] == stage)
-                                    buttons.setVisibility(View.GONE);
+                                new AlertDialog.Builder(context)
+                                        .setTitle("Confirm Progress")
+                                        .setMessage("Are you sure you?")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                new AddProgress().execute(username, taskid, "1");
+                                                com[0]++;
+                                                completedLabel.setText("Completed : " + com[0] + "/" + stage);
+                                                if (com[0] == stage)
+                                                    buttons.setVisibility(View.GONE);
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .create().show();
                             }
                         });
                         completedAll.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                //Run Script to add one completed stage for the user
-                                completedLabel.setText("Completed : " + stage + "/" + stage);
-                                buttons.setVisibility(View.GONE);
+                                new AlertDialog.Builder(context)
+                                        .setTitle("Confirm Progress")
+                                        .setMessage("Are you sure you have completed the task?")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                new AddProgress().execute(username, taskid, ""+(stage - com[0]));
+                                                completedLabel.setText("Completed : " + stage + "/" + stage);
+                                                buttons.setVisibility(View.GONE);
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .create().show();
                             }
                         });
                         buttons.addView(completedAll);
@@ -209,6 +239,51 @@ public class FragmentTasksClass extends Fragment{
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
+        }
+    }
+    private class AddProgress extends AsyncTask<String,Void,Void> {
+        String webPage="";
+        String baseUrl = "http://www.techeagle.in/tcap/";
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute(){
+            progressDialog = ProgressDialog.show(getActivity(), "Please Wait!","Updating!");
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(String... strings){
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try
+            {
+                String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]+"&userprogress="+strings[2];
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data=br.readLine()) != null)
+                    webPage=webPage+data;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            if(webPage.contains("success"))
+                Toast.makeText(getActivity(), "Progress Updated Successfully.", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getActivity(), "Some error occurred.", Toast.LENGTH_LONG).show();
         }
     }
 }
