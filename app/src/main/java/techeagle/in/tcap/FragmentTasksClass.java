@@ -13,6 +13,7 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +29,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import pl.pawelkleczkowski.customgauge.CustomGauge;
+
 /**
  * Created by Abhinav on 16-Dec-17.
  */
@@ -39,13 +42,13 @@ public class FragmentTasksClass extends Fragment{
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         new FetchTasks().execute(username);
-        FloatingActionButton sync = rootView.findViewById(R.id.sync);
+        /*FloatingActionButton sync = rootView.findViewById(R.id.sync);
         sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new FetchTasks().execute(username);
             }
-        });
+        });*/
         return rootView;
     }
     private class FetchTasks extends AsyncTask<String,Void,Void> {
@@ -92,8 +95,11 @@ public class FragmentTasksClass extends Fragment{
             {
                 LinearLayout data = rootView.findViewById(R.id.data);
                 data.removeAllViews();
+                double totalProgress = 0;
+                int count = 0;
                 while (webPage.contains("<br>"))
                 {
+                    count++;
                     int brI = webPage.indexOf("<br>");
                     String name = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
@@ -116,9 +122,6 @@ public class FragmentTasksClass extends Fragment{
                     String details = webPage.substring(0, brI);
                     details = details.replaceAll("<br />", "\n");
                     webPage = webPage.substring(brI + 8);
-
-                    Log.d("Abhinav", name+"\n"+taskid+"\n"+deadline+"\n"+stages+"\nCompleted : "+completed+"\n"+rewardPoints+"\n"+details+"\n");
-
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
@@ -130,41 +133,54 @@ public class FragmentTasksClass extends Fragment{
                     LinearLayout mid = new LinearLayout(context);
                     mid.setLayoutParams(matchParams);
                     mid.setOrientation(LinearLayout.VERTICAL);
-                    mid.setPadding(0,20,0,20);
+                    mid.setPadding(20,20,20,20);
+                    LinearLayout title = new LinearLayout(context);
+                    title.setLayoutParams(matchParams);
+                    title.setOrientation(LinearLayout.HORIZONTAL);
                     TextView nameLabel = new TextView(context);
+                    nameLabel.setLayoutParams(matchParams);
                     nameLabel.setText(name);
                     nameLabel.setTextSize(24);
-                    nameLabel.setGravity(Gravity.CENTER);
-                    mid.addView(nameLabel);
+                    nameLabel.setGravity(Gravity.START);
+                    title.addView(nameLabel);
+                    TextView rewardPointsLabel = new TextView(context);
+                    rewardPointsLabel.setLayoutParams(matchParams);
+                    rewardPointsLabel.setText("Points : " + rewardPoints);
+                    rewardPointsLabel.setTextSize(20);
+                    rewardPointsLabel.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
+                    title.addView(rewardPointsLabel);
+                    mid.addView(title);
+                    TextView deadlineLabel = new TextView(context);
+                    deadlineLabel.setText("Deadline : " + deadline);
+                    deadlineLabel.setTextSize(20);
+                    deadlineLabel.setGravity(Gravity.START);
+                    mid.addView(deadlineLabel);
+                    LayoutInflater progressInflater = LayoutInflater.from(context);
+                    final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
+                    seekBar.setOnTouchListener(new View.OnTouchListener() {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
+                    final int com[] = new int[1];
+                    com[0] = Integer.parseInt(completed);
+                    final int stage = Integer.parseInt(stages);
+                    totalProgress += (com[0]/stage);
+                    seekBar.setMax(stage);
+                    seekBar.setProgress(com[0]);
+                    mid.addView(seekBar);
                     final int id = View.generateViewId();
                     LinearLayout inner = new LinearLayout(context);
                     inner.setLayoutParams(matchParams);
                     inner.setOrientation(LinearLayout.VERTICAL);
                     inner.setVisibility(View.GONE);
                     inner.setId(id);
-                    TextView deadlineLabel = new TextView(context);
-                    deadlineLabel.setText("Deadline : " + deadline);
-                    deadlineLabel.setTextSize(20);
-                    deadlineLabel.setGravity(Gravity.CENTER);
-                    inner.addView(deadlineLabel);
                     final TextView completedLabel = new TextView(context);
                     completedLabel.setText("Completed : " + completed + "/" + stages);
                     completedLabel.setTextSize(20);
                     completedLabel.setGravity(Gravity.CENTER);
                     inner.addView(completedLabel);
-                    TextView rewardPointsLabel = new TextView(context);
-                    rewardPointsLabel.setText("Reward Points : " + rewardPoints);
-                    rewardPointsLabel.setTextSize(20);
-                    rewardPointsLabel.setGravity(Gravity.CENTER);
-                    inner.addView(rewardPointsLabel);
                     TextView detailsLabel = new TextView(context);
                     detailsLabel.setText("Details : " + details);
                     detailsLabel.setTextSize(20);
                     detailsLabel.setGravity(Gravity.CENTER);
                     inner.addView(detailsLabel);
-                    final int com[] = new int[1];
-                    com[0] = Integer.parseInt(completed);
-                    final int stage = Integer.parseInt(stages);
                     if(com[0] < stage)
                     {
                         final LinearLayout buttons = new LinearLayout(context);
@@ -191,6 +207,7 @@ public class FragmentTasksClass extends Fragment{
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 new AddProgress().execute(username, taskid, "1");
                                                 com[0]++;
+                                                seekBar.setProgress(com[0]);
                                                 completedLabel.setText("Completed : " + com[0] + "/" + stage);
                                                 if (com[0] == stage)
                                                     buttons.setVisibility(View.GONE);
@@ -210,6 +227,7 @@ public class FragmentTasksClass extends Fragment{
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 new AddProgress().execute(username, taskid, ""+(stage - com[0]));
+                                                seekBar.setProgress(stage);
                                                 completedLabel.setText("Completed : " + stage + "/" + stage);
                                                 buttons.setVisibility(View.GONE);
                                             }
@@ -236,6 +254,11 @@ public class FragmentTasksClass extends Fragment{
                         }
                     });
                 }
+                int finalProgress = (int)(totalProgress*100/count);
+                CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
+                myGauge.setValue(finalProgress);
+                TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
+                totalpercentage.setText(finalProgress + "%");
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();

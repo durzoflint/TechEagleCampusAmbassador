@@ -31,6 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:orientation="vertical"
             android:paddingEnd="16dp"
             android:paddingStart="16dp">
@@ -53,7 +54,7 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <android.support.design.widget.TabLayout
+        <!--android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -70,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_2" />
 
-        </android.support.design.widget.TabLayout>
+        </android.support.design.widget.TabLayout-->
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

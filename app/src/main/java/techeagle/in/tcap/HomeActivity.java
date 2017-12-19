@@ -38,9 +38,9 @@ public class HomeActivity extends AppCompatActivity {
         ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(1);
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        /*TabLayout tabLayout = findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,14 +64,12 @@ public class HomeActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return new FragmentTasksClass();
-                case 1:
-                    return new FragmentProgressClass();
             }
             return null;
         }
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
     }
 }
