@@ -38,6 +38,7 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 public class FragmentTasksClass extends Fragment{
     View rootView;
     String username = HomeActivity.username;
+    int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
@@ -96,7 +97,6 @@ public class FragmentTasksClass extends Fragment{
                 LinearLayout data = rootView.findViewById(R.id.data);
                 data.removeAllViews();
                 double totalProgress = 0;
-                int count = 0;
                 while (webPage.contains("<br>"))
                 {
                     count++;
@@ -158,12 +158,12 @@ public class FragmentTasksClass extends Fragment{
                     LayoutInflater progressInflater = LayoutInflater.from(context);
                     final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
                     seekBar.setOnTouchListener(new View.OnTouchListener() {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
-                    final int com[] = new int[1];
+                    final double com[] = new double[1];
                     com[0] = Integer.parseInt(completed);
-                    final int stage = Integer.parseInt(stages);
+                    final double stage = Integer.parseInt(stages);
                     totalProgress += (com[0]/stage);
-                    seekBar.setMax(stage);
-                    seekBar.setProgress(com[0]);
+                    seekBar.setMax((int)stage);
+                    seekBar.setProgress((int)com[0]);
                     mid.addView(seekBar);
                     final int id = View.generateViewId();
                     LinearLayout inner = new LinearLayout(context);
@@ -186,15 +186,12 @@ public class FragmentTasksClass extends Fragment{
                         final LinearLayout buttons = new LinearLayout(context);
                         buttons.setOrientation(LinearLayout.HORIZONTAL);
                         buttons.setLayoutParams(matchParams);
-                        LinearLayout.LayoutParams wrapParams = new LinearLayout.LayoutParams
-                                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-                        wrapParams.gravity = Gravity.CENTER_HORIZONTAL;
                         Button completedOne = new Button(context);
-                        completedOne.setLayoutParams(wrapParams);
-                        completedOne.setText("Completed One");
+                        completedOne.setLayoutParams(matchParams);
+                        completedOne.setText("Completed One More");
                         buttons.addView(completedOne);
                         Button completedAll = new Button(context);
-                        completedAll.setLayoutParams(wrapParams);
+                        completedAll.setLayoutParams(matchParams);
                         completedAll.setText("Completed All");
                         completedOne.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -207,7 +204,8 @@ public class FragmentTasksClass extends Fragment{
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 new AddProgress().execute(username, taskid, "1");
                                                 com[0]++;
-                                                seekBar.setProgress(com[0]);
+                                                seekBar.setProgress((int)com[0]);
+                                                calculateFinalProgress(1, (int)stage);
                                                 completedLabel.setText("Completed : " + com[0] + "/" + stage);
                                                 if (com[0] == stage)
                                                     buttons.setVisibility(View.GONE);
@@ -227,7 +225,8 @@ public class FragmentTasksClass extends Fragment{
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                 new AddProgress().execute(username, taskid, ""+(stage - com[0]));
-                                                seekBar.setProgress(stage);
+                                                seekBar.setProgress((int)stage);
+                                                calculateFinalProgress((int)(stage-com[0]), (int)stage);
                                                 completedLabel.setText("Completed : " + stage + "/" + stage);
                                                 buttons.setVisibility(View.GONE);
                                             }
@@ -257,11 +256,25 @@ public class FragmentTasksClass extends Fragment{
                 int finalProgress = (int)(totalProgress*100/count);
                 CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
                 myGauge.setValue(finalProgress);
+                String progString = finalProgress+"";
                 TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
-                totalpercentage.setText(finalProgress + "%");
+                if (progString.length()>6)
+                    progString = progString.substring(0, 6);
+                totalpercentage.setText(progString + "%");
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
+        }
+        void calculateFinalProgress(double num,  double deno) {
+            CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
+            double prog = myGauge.getValue();
+            prog = (((prog*count)/100+(num/deno))*100)/count;
+            myGauge.setValue((int)prog);
+            String progString = prog+"";
+            TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
+            if (progString.length()>6)
+                progString = progString.substring(0, 6);
+            totalpercentage.setText(progString + "%");
         }
     }
     private class AddProgress extends AsyncTask<String,Void,Void> {
