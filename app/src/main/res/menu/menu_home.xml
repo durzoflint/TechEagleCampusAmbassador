@@ -2,9 +2,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="techeagle.in.tcap.HomeActivity">
+    <!--item
+        android:icon="@drawable/logogrey"
+        android:orderInCategory="0"
+        android:title="TechEagle"
+        app:showAsAction="always" /-->
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/leaderboard"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Leaderboard"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/aboutte"
+        android:orderInCategory="100"
+        android:title="About Us"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/aboutapp"
+        android:orderInCategory="100"
+        android:title="About the App"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="100"
+        android:title="Logout"
         app:showAsAction="never" />
 </menu>

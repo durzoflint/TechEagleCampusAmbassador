@@ -17,18 +17,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 /**
@@ -39,17 +36,9 @@ public class FragmentTasksClass extends Fragment{
     View rootView;
     String username = HomeActivity.username;
     int count = 0;
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         new FetchTasks().execute(username);
-        /*FloatingActionButton sync = rootView.findViewById(R.id.sync);
-        sync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FetchTasks().execute(username);
-            }
-        });*/
         return rootView;
     }
     private class FetchTasks extends AsyncTask<String,Void,Void> {
@@ -157,7 +146,8 @@ public class FragmentTasksClass extends Fragment{
                     mid.addView(deadlineLabel);
                     LayoutInflater progressInflater = LayoutInflater.from(context);
                     final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
-                    seekBar.setOnTouchListener(new View.OnTouchListener() {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
+                    seekBar.setOnTouchListener(new View.OnTouchListener()
+                    {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
                     final double com[] = new double[1];
                     com[0] = Integer.parseInt(completed);
                     final double stage = Integer.parseInt(stages);
@@ -224,7 +214,7 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                new AddProgress().execute(username, taskid, ""+(stage - com[0]));
+                                                new AddProgress().execute(username, taskid, ""+(int)(stage - com[0]));
                                                 seekBar.setProgress((int)stage);
                                                 calculateFinalProgress((int)(stage-com[0]), (int)stage);
                                                 completedLabel.setText("Completed : " + stage + "/" + stage);
@@ -268,7 +258,7 @@ public class FragmentTasksClass extends Fragment{
         void calculateFinalProgress(double num,  double deno) {
             CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
             double prog = myGauge.getValue();
-            prog = (((prog*count)/100+(num/deno))*100)/count;
+            prog = ((prog*count)/100+(num/deno))*100/count;
             myGauge.setValue((int)prog);
             String progString = prog+"";
             TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
@@ -316,7 +306,7 @@ public class FragmentTasksClass extends Fragment{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            if(webPage.contains("success"))
+            if(webPage.equals("success"))
                 Toast.makeText(getActivity(), "Progress Updated Successfully.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(getActivity(), "Some error occurred.", Toast.LENGTH_LONG).show();
