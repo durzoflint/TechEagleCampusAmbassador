@@ -43,8 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
-    static String name = "Your name comes here";
-    static String username = "";
+    static String name = "", username = "";
     FragmentTasksClass fragmentTasksClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,12 @@ public class HomeActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    onSignedInInitialize(user.getDisplayName());
+                    String newUser = user.getEmail();
+                    if (!newUser.equals(username) && username.length()<4)
+                    {
+                        username = newUser;
+                        onSignedInInitialize();
+                    }
                 }
                 else
                 {
@@ -65,7 +69,6 @@ public class HomeActivity extends AppCompatActivity {
                             new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                             new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
                     );
-
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -78,15 +81,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         };
-        Intent i = getIntent();
-        name = i.getStringExtra("Name");
-        username = i.getStringExtra("Username");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(1);
         /*TabLayout tabLayout = findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));*/
@@ -97,18 +93,16 @@ public class HomeActivity extends AppCompatActivity {
                 animateFAB();
             }
         });
-        fab2 = findViewById(R.id.fab2);
-        fab3 = findViewById(R.id.fab3);
-        fab4 = findViewById(R.id.fab4);
-        fab5 = findViewById(R.id.fab5);
+        fab2 = findViewById(R.id.fab2);        fab3 = findViewById(R.id.fab3);
+        fab4 = findViewById(R.id.fab4);        fab5 = findViewById(R.id.fab5);
         fab6 = findViewById(R.id.fab6);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fade_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
     }
-    public void animateFAB()
-    {
+
+    public void animateFAB() {
         if(isFabOpen)
         {
             fab1.setImageResource(android.R.drawable.ic_menu_share);
@@ -141,11 +135,13 @@ public class HomeActivity extends AppCompatActivity {
             isFabOpen = true;
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -159,11 +155,12 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.aboutapp:
                 break;
             case R.id.logout:
-                logout();
+                AuthUI.getInstance().signOut(this);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -182,26 +179,9 @@ public class HomeActivity extends AppCompatActivity {
             return 1;
         }
     }
-    @Override
-    public void onBackPressed() {
-        logout();
-    }
-    void logout(){
-        AuthUI.getInstance().signOut(this);
-        /*new AlertDialog.Builder(this)
-                .setTitle("Really Logout?")
-                .setMessage("Are you sure you want to Logout?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        *//*Intent i = getBaseContext().getPackageManager()
-                                .getLaunchIntentForPackage( getBaseContext().getPackageName() );
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(i);*//*
-                    }
-                }).create().show();*/
-    }
-    private void onSignedInInitialize(String username) {
+
+    private void onSignedInInitialize() {
+        new Login().execute(username);
     }
 
     private void onSignedOutCleanup() {
@@ -217,33 +197,23 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (mAuthStateListener != null)
-        {
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN)
-        {
-            if (resultCode == RESULT_OK)
-            {
-                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
-            }
-            else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
-            }
-        }
+        if (requestCode == RC_SIGN_IN && resultCode == RESULT_CANCELED)
+                finish();
     }
 
-    /*private class Login extends AsyncTask<String,Void,Void> {
+    private class Login extends AsyncTask<String,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(HomeActivity.this, "Please Wait!","Logging In!");
+            progressDialog = ProgressDialog.show(HomeActivity.this, "Please Wait!","Validating Login!");
             super.onPreExecute();
         }
         @Override
@@ -252,7 +222,7 @@ public class HomeActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"login.php?username="+strings[0]+"&password="+strings[1];
+                String myURL = baseUrl+"login.php?username="+strings[0];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -281,15 +251,17 @@ public class HomeActivity extends AppCompatActivity {
                 int brI = webPage.indexOf("<br>");
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
-                String name = webPage.substring(0, brI);
-                webPage = webPage.substring(brI+4);
-                Intent i = new Intent(HomeActivity.this, HomeActivity.class);
-                i.putExtra("Name",name);
-                i.putExtra("Username", id);
-                startActivity(i);
+                name = webPage.substring(0, brI);
+                SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                ViewPager mViewPager = findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+                mViewPager.setOffscreenPageLimit(1);
             }
             else
-                Toast.makeText(HomeActivity.this, "Username or Password incorrect.", Toast.LENGTH_LONG).show();
+            {
+                Toast.makeText(HomeActivity.this, "Invalid Login.", Toast.LENGTH_LONG).show();
+                AuthUI.getInstance().signOut(HomeActivity.this);
+            }
         }
-    }*/
+    }
 }
