@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1027069492094",
+    "firebase_url": "https://tcap20018.firebaseio.com",
+    "project_id": "tcap20018",
+    "storage_bucket": "tcap20018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027069492094:android:f9c0065b7c432f0a",
+        "android_client_info": {
+          "package_name": "techeagle.in.tcap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027069492094-tihlgpfscuutbj2q1364efepgmj16s8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "techeagle.in.tcap",
+            "certificate_hash": "3130652a172731c8eeba80151f91121c07ca56c2"
+          }
+        },
+        {
+          "client_id": "1027069492094-p3b6r0l4o5hi3rkpppcphvaba9f83r4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEHsrGB42tELZAcBMS-JpxzWaZAhYtn_E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027069492094-p3b6r0l4o5hi3rkpppcphvaba9f83r4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
