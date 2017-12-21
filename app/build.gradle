@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:11.6.2'
     implementation 'com.firebaseui:firebase-ui-auth:3.1.2'
     implementation 'com.facebook.android:facebook-login:4.29.0'
+    implementation 'com.google.firebase:firebase-messaging:11.6.2'
     testImplementation 'junit:junit:4.12'
     compile 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
 }

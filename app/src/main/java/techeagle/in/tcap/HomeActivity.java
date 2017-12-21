@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     String newUser = user.getEmail();
-                    if (!newUser.equals(username) && username.length()<4)
+                    if (!newUser.equals(username) || username.length()<4)
                     {
                         username = newUser;
                         onSignedInInitialize();
