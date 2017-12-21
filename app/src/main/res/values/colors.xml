@@ -6,4 +6,6 @@
     <color name="colorAccent">#1fb7a6</color>
     <color name="colorBackground">#2c3e50</color>
     <color name="colorSecondary">#FFC107</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="googleplusbackground">#de5347</color>
 </resources>

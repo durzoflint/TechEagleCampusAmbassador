@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">TCAP</string>
-    <string name="title_activity_home">Home</string>
+    <string name="title_activity_home">TCAP</string>
     <string name="tab_text_1">Tasks</string>
 </resources>

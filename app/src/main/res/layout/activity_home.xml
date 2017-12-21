@@ -50,9 +50,9 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
-        android:layout_below="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_below="@+id/appbar"
+        android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
 
@@ -64,6 +64,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
         app:srcCompat="@android:drawable/ic_menu_share" />
@@ -77,9 +78,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
+        app:backgroundTint="@color/fui_bgFacebook"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/com_facebook_button_icon_blue" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
@@ -90,9 +92,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
+        app:backgroundTint="@color/colorRed"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/youtube" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab4"
@@ -103,9 +106,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
+        app:backgroundTint="@android:color/white"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/instagram" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab5"
@@ -116,9 +120,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
+        app:backgroundTint="@color/googleplusbackground"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/gplus" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab6"
@@ -129,8 +134,9 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
+        app:backgroundTint="@android:color/white"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/logogrey" />
 
 </RelativeLayout>

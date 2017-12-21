@@ -93,8 +93,10 @@ public class HomeActivity extends AppCompatActivity {
                 animateFAB();
             }
         });
-        fab2 = findViewById(R.id.fab2);        fab3 = findViewById(R.id.fab3);
-        fab4 = findViewById(R.id.fab4);        fab5 = findViewById(R.id.fab5);
+        fab2 = findViewById(R.id.fab2);
+        fab3 = findViewById(R.id.fab3);
+        fab4 = findViewById(R.id.fab4);
+        fab5 = findViewById(R.id.fab5);
         fab6 = findViewById(R.id.fab6);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
