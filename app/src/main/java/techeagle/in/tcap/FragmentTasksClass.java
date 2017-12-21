@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,16 @@ public class FragmentTasksClass extends Fragment{
     int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+        TextView name = rootView.findViewById(R.id.name);
+        name.setText(HomeActivity.name);
         new FetchTasks().execute(username);
+        RelativeLayout edit = rootView.findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Under Development", Toast.LENGTH_SHORT).show();
+            }
+        });
         return rootView;
     }
     private class FetchTasks extends AsyncTask<String,Void,Void> {
@@ -168,8 +178,9 @@ public class FragmentTasksClass extends Fragment{
                     inner.addView(completedLabel);
                     TextView detailsLabel = new TextView(context);
                     detailsLabel.setText("Details : " + details);
+                    detailsLabel.setPadding(8,0,8,8);
                     detailsLabel.setTextSize(20);
-                    detailsLabel.setGravity(Gravity.CENTER);
+                    detailsLabel.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     inner.addView(detailsLabel);
                     if(com[0] < stage)
                     {

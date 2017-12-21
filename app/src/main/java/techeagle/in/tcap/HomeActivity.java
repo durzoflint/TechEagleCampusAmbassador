@@ -22,7 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
-    String name = "Your name comes here";
+    static String name = "Your name comes here";
     static String username = "";
     FragmentTasksClass fragmentTasksClass;
     @Override
@@ -32,8 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent i = getIntent();
         name = i.getStringExtra("Name");
         username = i.getStringExtra("Username");
-        TextView nameLabel = findViewById(R.id.name);
-        nameLabel.setText("Name : " + name);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
