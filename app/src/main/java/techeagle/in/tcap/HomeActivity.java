@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
-    static String username = "";
+    static String username = "", imageuri = "", nameOfUser = "";
     FragmentTasksClass fragmentTasksClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,13 +193,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onSignedInInitialize() {
-        new Login().execute(username);
-        String photoUri = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
-        if (!Objects.equals(photoUri, "")) {
-            Picasso.with(this).load(photoUri).into(profile_image);
+        imageuri = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
+        nameOfUser = mFirebaseAuth.getCurrentUser().getDisplayName();
+        if (!Objects.equals(imageuri, "")) {
+            Picasso.with(this).load(imageuri).into(profile_image);
         }
         TextView name = findViewById(R.id.name);
-        name.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+        name.setText(nameOfUser);
+        new Login().execute(username);
     }
 
     private void onSignedOutCleanup() {

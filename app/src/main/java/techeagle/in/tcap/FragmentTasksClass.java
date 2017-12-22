@@ -37,13 +37,15 @@ public class FragmentTasksClass extends Fragment{
     View rootView;
     CustomGauge myGauge;
     TextView totalpercentage;
-    String username;
+    String username, imageuri, name;
     int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         myGauge = HomeActivity.myGauge;
         username = HomeActivity.username;
         totalpercentage = HomeActivity.totalpercentage;
+        imageuri = HomeActivity.imageuri;
+        name = HomeActivity.nameOfUser;
         new FetchTasks().execute(username);
         return rootView;
     }
@@ -198,10 +200,10 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                calculateFinalProgress(1, (int)stage);
                                                 new AddProgress().execute(username, taskid, "1");
                                                 com[0]++;
                                                 seekBar.setProgress((int)com[0]);
-                                                calculateFinalProgress(1, (int)stage);
                                                 completedLabel.setText("Completed : " + com[0] + "/" + stage);
                                                 if (com[0] == stage)
                                                     buttons.setVisibility(View.GONE);
@@ -220,9 +222,9 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                calculateFinalProgress((int)(stage-com[0]), (int)stage);
                                                 new AddProgress().execute(username, taskid, ""+(int)(stage - com[0]));
                                                 seekBar.setProgress((int)stage);
-                                                calculateFinalProgress((int)(stage-com[0]), (int)stage);
                                                 completedLabel.setText("Completed : " + stage + "/" + stage);
                                                 buttons.setVisibility(View.GONE);
                                             }
@@ -286,7 +288,8 @@ public class FragmentTasksClass extends Fragment{
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]+"&userprogress="+strings[2];
+                String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]
+                        +"&userprogress="+strings[2]+"&totalprogress="+myGauge.getValue()+"&imageuri="+imageuri+"&name="+name;
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();

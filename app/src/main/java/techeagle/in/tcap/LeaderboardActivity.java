@@ -12,18 +12,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LeaderboardActivity extends AppCompatActivity {
-
+    int ids[][];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+        ids = new int[10][3];
+        ids[0][0] = R.id.name1;        ids[0][1] = R.id.points1;        ids[0][2] = R.id.dp1;
+        ids[1][0] = R.id.name2;        ids[1][1] = R.id.points2;        ids[1][2] = R.id.dp2;
+        ids[2][0] = R.id.name3;        ids[2][1] = R.id.points3;        ids[2][2] = R.id.dp3;
+        ids[3][0] = R.id.name4;        ids[3][1] = R.id.points4;        ids[3][2] = R.id.dp4;
+        ids[4][0] = R.id.name5;        ids[4][1] = R.id.points5;        ids[4][2] = R.id.dp5;
+        ids[5][0] = R.id.name6;        ids[5][1] = R.id.points6;        ids[5][2] = R.id.dp6;
+        ids[6][0] = R.id.name7;        ids[6][1] = R.id.points7;        ids[6][2] = R.id.dp7;
+        ids[7][0] = R.id.name8;        ids[7][1] = R.id.points8;        ids[7][2] = R.id.dp8;
+        ids[8][0] = R.id.name9;        ids[8][1] = R.id.points9;        ids[8][2] = R.id.dp9;
+        ids[9][0] = R.id.name10;        ids[9][1] = R.id.points10;        ids[9][2] = R.id.dp10;
         new FetchLeaderboard().execute();
         setTitle("Leaderboard");
     }
@@ -69,50 +85,21 @@ public class LeaderboardActivity extends AppCompatActivity {
             if(webPage.contains("<br>"))
             {
                 int i = 0;
-                while (webPage.contains("<br>"))
+                while (i < 10)
                 {
                     int index = webPage.indexOf("<br>");
-                    if (i == 0)
-                    {
-                        TextView first = findViewById(R.id.first);
-                        first.setText("1st\n" + webPage.substring(0, index));
-                    }
-                    else if (i == 1)
-                    {
-                        TextView second = findViewById(R.id.second);
-                        second.setText("2nd\n" + webPage.substring(0, index));
-                    }
-                    else if (i == 2)
-                    {
-                        TextView third = findViewById(R.id.third);
-                        third.setText("3rd\n" + webPage.substring(0, index));
-                    }
-                    else
-                    {
-                        LinearLayout data = findViewById(R.id.data);
-                        Context context = LeaderboardActivity.this;
-                        LinearLayout.LayoutParams layoutParamsOne = new LinearLayout.LayoutParams(LinearLayout
-                                .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-                        LinearLayout.LayoutParams layoutParamsTen = new LinearLayout.LayoutParams(LinearLayout
-                                .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 10f);
-                        LinearLayout linearLayout = new LinearLayout(context);
-                        linearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
-                        linearLayout.setLayoutParams(layoutParamsOne);
-                        TextView tv1=new TextView(context);
-                        tv1.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
-                        tv1.setPadding(8,0,0,0);
-                        tv1.setLayoutParams(layoutParamsTen);
-                        tv1.setGravity(Gravity.CENTER);
-                        tv1.setText("" + (i + 1));
-                        linearLayout.addView(tv1);
-                        TextView tv2=new TextView(context);
-                        tv2.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
-                        tv2.setGravity(Gravity.CENTER);
-                        tv2.setPadding(8,0,0,0);
-                        tv2.setLayoutParams(layoutParamsOne);
-                        tv2.setText(webPage.substring(0, index));
-                        linearLayout.addView(tv2);
-                        data.addView(linearLayout);
+                    TextView nametv = findViewById(ids[i][0]);
+                    nametv.setText(webPage.substring(0, index));
+                    webPage = webPage.substring(index + 4);
+                    index = webPage.indexOf("<br>");
+                    TextView pointstv = findViewById(ids[i][1]);
+                    pointstv.setText("Points : " + webPage.substring(0, index));
+                    webPage = webPage.substring(index + 4);
+                    index = webPage.indexOf("<br>");
+                    String image = webPage.substring(0, index);
+                    if (!Objects.equals(image, "")) {
+                        CircleImageView civ = findViewById(ids[i][2]);
+                        Picasso.with(LeaderboardActivity.this).load(image).into(civ);
                     }
                     webPage = webPage.substring(index + 4);
                     i++;
