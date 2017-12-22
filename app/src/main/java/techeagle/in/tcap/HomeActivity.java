@@ -1,8 +1,10 @@
 package techeagle.in.tcap;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -104,10 +106,43 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         fab2 = findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+                String facebookUrl = getFacebookPageURL(HomeActivity.this);
+                facebookIntent.setData(Uri.parse(facebookUrl));
+                startActivity(facebookIntent);
+            }
+        });
         fab3 = findViewById(R.id.fab3);
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCftZVB8RYby7bGqLf8BRqlA/videos")));
+            }
+        });
         fab4 = findViewById(R.id.fab4);
+        fab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/_u/TechEagle.in/")));
+            }
+        });
         fab5 = findViewById(R.id.fab5);
+        fab5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://plus.google.com/116052057022465218921")));
+            }
+        });
         fab6 = findViewById(R.id.fab6);
+        fab6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://techeagle.in")));
+            }
+        });
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
@@ -167,7 +202,15 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.aboutapp:
                 break;
             case R.id.logout:
-                AuthUI.getInstance().signOut(this);
+                new AlertDialog.Builder(this)
+                        .setTitle("Really Logout?")
+                        .setMessage("Are you sure you want to Logout?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                AuthUI.getInstance().signOut(HomeActivity.this);
+                            }
+                        }).create().show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -295,4 +338,36 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    public static String getFacebookPageURL(Context context)
+    {
+        final String FACEBOOK_PAGE_ID = "1634843790088323";
+        final String FACEBOOK_URL = "https://www.facebook.com/TechEagle.in";
+        if(appInstalledOrNot(context, "com.facebook.katana"))
+        {
+            try
+            {
+                return "fb://page/" + FACEBOOK_PAGE_ID;
+            }
+            catch(Exception e)
+            {
+                return "fb://facewebmodal/f?href=" + FACEBOOK_URL;
+            }
+        }
+        else
+            return FACEBOOK_URL;
+    }
+
+    private static boolean appInstalledOrNot(Context context, String uri)
+    {
+        PackageManager pm = context.getPackageManager();
+        try
+        {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        }
+        catch(PackageManager.NameNotFoundException ignored){}
+        return false;
+    }
+
 }
