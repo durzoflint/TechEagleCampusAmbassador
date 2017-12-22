@@ -35,12 +35,15 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class FragmentTasksClass extends Fragment{
     View rootView;
-    CustomGauge myGauge = HomeActivity.myGauge;
-    TextView totalpercentage = HomeActivity.totalpercentage;
-    String username = HomeActivity.username;
+    CustomGauge myGauge;
+    TextView totalpercentage;
+    String username;
     int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
+        myGauge = HomeActivity.myGauge;
+        username = HomeActivity.username;
+        totalpercentage = HomeActivity.totalpercentage;
         new FetchTasks().execute(username);
         return rootView;
     }
@@ -83,7 +86,6 @@ public class FragmentTasksClass extends Fragment{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
             if(webPage.contains("<br>"))
             {
                 LinearLayout data = rootView.findViewById(R.id.data);
@@ -256,9 +258,10 @@ public class FragmentTasksClass extends Fragment{
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
+
         void calculateFinalProgress(double num,  double deno) {
-            CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
             double prog = myGauge.getValue();
             prog = ((prog*count)/100+(num/deno))*100/count;
             myGauge.setValue((int)prog);
