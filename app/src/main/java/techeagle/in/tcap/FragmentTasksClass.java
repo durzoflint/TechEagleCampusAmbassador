@@ -35,20 +35,13 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 
 public class FragmentTasksClass extends Fragment{
     View rootView;
+    CustomGauge myGauge = HomeActivity.myGauge;
+    TextView totalpercentage = HomeActivity.totalpercentage;
     String username = HomeActivity.username;
     int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
-        TextView name = rootView.findViewById(R.id.name);
-        name.setText(HomeActivity.name);
         new FetchTasks().execute(username);
-        RelativeLayout edit = rootView.findViewById(R.id.edit);
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Under Development", Toast.LENGTH_SHORT).show();
-            }
-        });
         return rootView;
     }
     private class FetchTasks extends AsyncTask<String,Void,Void> {
@@ -255,10 +248,8 @@ public class FragmentTasksClass extends Fragment{
                     });
                 }
                 int finalProgress = (int)(totalProgress*100/count);
-                CustomGauge myGauge = rootView.findViewById(R.id.gauge1);
                 myGauge.setValue(finalProgress);
                 String progString = finalProgress+"";
-                TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
                 if (progString.length()>6)
                     progString = progString.substring(0, 6);
                 totalpercentage.setText(progString + "%");
@@ -272,7 +263,6 @@ public class FragmentTasksClass extends Fragment{
             prog = ((prog*count)/100+(num/deno))*100/count;
             myGauge.setValue((int)prog);
             String progString = prog+"";
-            TextView totalpercentage = rootView.findViewById(R.id.totalpercentage);
             if (progString.length()>6)
                 progString = progString.substring(0, 6);
             totalpercentage.setText(progString + "%");

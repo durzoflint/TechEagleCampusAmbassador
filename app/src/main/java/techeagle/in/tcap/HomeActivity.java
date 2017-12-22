@@ -3,6 +3,7 @@ package techeagle.in.tcap;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,16 +36,24 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import pl.pawelkleczkowski.customgauge.CustomGauge;
+
+import static java.security.AccessController.getContext;
 
 public class HomeActivity extends AppCompatActivity {
-    //Uri xx = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+    CircleImageView profile_image;
+    static CustomGauge myGauge;
+    static TextView totalpercentage;
     public static final int RC_SIGN_IN = 1;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private Boolean isFabOpen = false;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
-    static String name = "", username = "";
+    static String username = "";
     FragmentTasksClass fragmentTasksClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +65,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    String newUser = user.getEmail();
-                    if (!newUser.equals(username) || username.length()<4)
-                    {
-                        username = newUser;
-                        onSignedInInitialize();
-                    }
+                    username = user.getEmail();
+                    onSignedInInitialize();
                 }
                 else
                 {
@@ -81,8 +87,12 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         };
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        myGauge = findViewById(R.id.gauge1);
+        totalpercentage = findViewById(R.id.totalpercentage);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        profile_image = findViewById(R.id.profile_image);
         /*TabLayout tabLayout = findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));*/
@@ -184,12 +194,18 @@ public class HomeActivity extends AppCompatActivity {
 
     private void onSignedInInitialize() {
         new Login().execute(username);
+        String photoUri = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
+        if (!Objects.equals(photoUri, "")) {
+            Picasso.with(this).load(photoUri).into(profile_image);
+        }
+        TextView name = findViewById(R.id.name);
+        name.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
     }
 
     private void onSignedOutCleanup() {
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
@@ -200,7 +216,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onPause();
         if (mAuthStateListener != null)
             mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -253,7 +269,19 @@ public class HomeActivity extends AppCompatActivity {
                 int brI = webPage.indexOf("<br>");
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
-                name = webPage.substring(0, brI);
+                String tcapID = webPage.substring(0, brI);
+                webPage = webPage.substring(brI+4);
+                brI = webPage.indexOf("<br>");
+                String points = webPage.substring(0, brI);
+                webPage = webPage.substring(brI+4);
+                brI = webPage.indexOf("<br>");
+                String rank = webPage.substring(0, brI);
+                TextView tcapid = findViewById(R.id.tcapid);
+                tcapid.setText(tcapID);
+                TextView userpoints = findViewById(R.id.userpoints);
+                userpoints.setText("Points\n" + points);
+                TextView userrank = findViewById(R.id.userrank);
+                userrank.setText("Rank\n" + rank);
                 SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 ViewPager mViewPager = findViewById(R.id.container);
                 mViewPager.setAdapter(mSectionsPagerAdapter);
