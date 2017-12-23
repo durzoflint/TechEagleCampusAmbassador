@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     private Boolean isFabOpen = false;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
-    static String username = "", imageuri = "", nameOfUser = "";
+    static String username = "", imageuri = "", nameOfUser = "", tcapID = "";
     FragmentTasksClass fragmentTasksClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +199,12 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.leaderboard:
                 startActivity(new Intent(HomeActivity.this, LeaderboardActivity.class));
                 break;
+            case R.id.profile:
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("tcapid", tcapID);
+                intent.putExtra("email", username);
+                startActivity(intent);
+                break;
             case R.id.aboutte:
                 break;
             case R.id.aboutapp:
@@ -316,7 +322,7 @@ public class HomeActivity extends AppCompatActivity {
                 nameOfUser = webPage.substring(0, brI);
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
-                String tcapID = webPage.substring(0, brI);
+                tcapID = webPage.substring(0, brI);
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
                 String points = webPage.substring(0, brI);
