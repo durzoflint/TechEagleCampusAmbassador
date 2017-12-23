@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,7 +94,14 @@ public class LeaderboardActivity extends AppCompatActivity {
                     webPage = webPage.substring(index + 4);
                     index = webPage.indexOf("<br>");
                     TextView pointstv = findViewById(ids[i][1]);
-                    pointstv.setText("Points : " + webPage.substring(0, index));
+                    String userpoints = webPage.substring(0, index);
+                    if (userpoints.equals("0"))
+                    {
+                        View v = (View)pointstv.getParent().getParent();
+                        v.setVisibility(View.GONE);
+                    }
+                    else
+                        pointstv.setText("Points : " + userpoints);
                     webPage = webPage.substring(index + 4);
                     index = webPage.indexOf("<br>");
                     String image = webPage.substring(0, index);

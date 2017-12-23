@@ -18,11 +18,11 @@
             android:padding="16dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -45,14 +45,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -64,11 +64,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -91,14 +91,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -110,11 +110,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -137,14 +137,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -156,11 +156,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -183,14 +183,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -202,11 +202,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -229,14 +229,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -248,11 +248,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -275,14 +275,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -294,11 +294,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -321,14 +321,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -340,11 +340,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -367,14 +367,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -386,11 +386,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -413,14 +413,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -432,11 +432,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@color/cardview_light_background"
-                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
                 android:padding="8dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -459,14 +459,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="name"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/points10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="points"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
