@@ -42,7 +42,6 @@ public class FragmentTasksClass extends Fragment{
     CustomGauge myGauge;
     TextView totalpercentage, userPoints, userRank;
     String username="", imageuri="", name="";
-    int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
         myGauge = HomeActivity.myGauge;
@@ -53,6 +52,7 @@ public class FragmentTasksClass extends Fragment{
         userPoints = HomeActivity.userpoints;
         userRank = HomeActivity.userrank;
         new FetchTasks().execute(username);
+        new FetchPointsAndProgress().execute(username);
         return rootView;
     }
     private class FetchTasks extends AsyncTask<String,Void,Void> {
@@ -98,10 +98,8 @@ public class FragmentTasksClass extends Fragment{
             {
                 LinearLayout data = rootView.findViewById(R.id.data);
                 data.removeAllViews();
-                double totalProgress = 0;
                 while (webPage.contains("<br>"))
                 {
-                    count++;
                     int brI = webPage.indexOf("<br>");
                     String name = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
@@ -164,7 +162,6 @@ public class FragmentTasksClass extends Fragment{
                     final double com[] = new double[1];
                     com[0] = Integer.parseInt(completed);
                     final double stage = Integer.parseInt(stages);
-                    totalProgress += (com[0]/stage);
                     seekBar.setMax((int)stage);
                     seekBar.setProgress((int)com[0]);
                     mid.addView(seekBar);
@@ -206,7 +203,6 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                calculateFinalProgress(1, (int)stage);
                                                 new AddProgress().execute(username, taskid, "1");
                                                 com[0]++;
                                                 seekBar.setProgress((int)com[0]);
@@ -228,7 +224,6 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                calculateFinalProgress((int)(stage-com[0]), (int)stage);
                                                 new AddProgress().execute(username, taskid, ""+(int)(stage - com[0]));
                                                 seekBar.setProgress((int)stage);
                                                 completedLabel.setText("Completed : " + stage + "/" + stage);
@@ -257,26 +252,10 @@ public class FragmentTasksClass extends Fragment{
                         }
                     });
                 }
-                int finalProgress = (int)(totalProgress*100/count);
-                myGauge.setValue(finalProgress);
-                String progString = finalProgress+"";
-                if (progString.length()>6)
-                    progString = progString.substring(0, 6);
-                totalpercentage.setText(progString + "%");
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
-        }
-
-        void calculateFinalProgress(double num,  double deno) {
-            double prog = myGauge.getValue();
-            prog = ((prog*count)/100+(num/deno))*100/count;
-            myGauge.setValue((int)prog);
-            String progString = prog+"";
-            if (progString.length()>6)
-                progString = progString.substring(0, 6);
-            totalpercentage.setText(progString + "%");
         }
     }
     private class AddProgress extends AsyncTask<String,Void,Void> {
@@ -295,9 +274,8 @@ public class FragmentTasksClass extends Fragment{
             try
             {
                 String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]
-                        +"&userprogress="+strings[2]+"&totalprogress="+myGauge.getValue()+"&name="+name+"&imageuri="+imageuri;
+                        +"&userprogress="+strings[2]+"&name="+name+"&imageuri="+imageuri;
                 myURL = myURL.replaceAll(" ", "%20");
-                Log.d("Abhinav", myURL);
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -324,7 +302,6 @@ public class FragmentTasksClass extends Fragment{
                 Toast.makeText(getActivity(), "Progress Updated Successfully.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(getActivity(), "Some error occurred.", Toast.LENGTH_LONG).show();
-
             new FetchPointsAndProgress().execute(username);
         }
     }
@@ -337,7 +314,7 @@ public class FragmentTasksClass extends Fragment{
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"fetchprogressandpoints.php?username="+strings[0];
+                String myURL = baseUrl+"fetchstatus.php?username="+strings[0];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -366,7 +343,13 @@ public class FragmentTasksClass extends Fragment{
                 String points = webPage.substring(0, brI);
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
+                int totalprogress = Integer.parseInt(webPage.substring(0, brI));
+                webPage = webPage.substring(brI+4);
+                brI = webPage.indexOf("<br>");
                 String rank = webPage.substring(0, brI);
+                webPage = webPage.substring(brI+4);
+                myGauge.setValue(totalprogress);
+                totalpercentage.setText(myGauge.getValue()+"%");
                 userPoints.setText("Points\n" + points);
                 userRank.setText("Rank\n" + rank);
             }
