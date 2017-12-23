@@ -1,13 +1,20 @@
 package techeagle.in.tcap;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -17,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,6 +41,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Abhinav on 16-Dec-17.
@@ -122,6 +133,10 @@ public class FragmentTasksClass extends Fragment{
                     String details = webPage.substring(0, brI);
                     details = details.replaceAll("<br />", "\n");
                     webPage = webPage.substring(brI + 8);
+                    brI = webPage.indexOf("<br>");
+                    String file = webPage.substring(0, brI);
+                    final String fileURI = file.replaceAll(" ", "%20");
+                    webPage = webPage.substring(brI + 4);
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
@@ -145,7 +160,7 @@ public class FragmentTasksClass extends Fragment{
                     title.addView(nameLabel);
                     TextView rewardPointsLabel = new TextView(context);
                     rewardPointsLabel.setLayoutParams(matchParams);
-                    rewardPointsLabel.setText("Points : " + rewardPoints);
+                    rewardPointsLabel.setText("Reward Points : " + rewardPoints);
                     rewardPointsLabel.setTextSize(20);
                     rewardPointsLabel.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);
                     title.addView(rewardPointsLabel);
@@ -180,8 +195,22 @@ public class FragmentTasksClass extends Fragment{
                     detailsLabel.setText("Details : " + details);
                     detailsLabel.setPadding(8,0,8,8);
                     detailsLabel.setTextSize(20);
-                    detailsLabel.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    //detailsLabel.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     inner.addView(detailsLabel);
+                    if (fileURI.length() > 0)
+                    {
+                        TextView attachedFile = new TextView(context);
+                        attachedFile.setText("Download attached file");
+                        attachedFile.setTextColor(getResources().getColor(R.color.colorAccent));
+                        attachedFile.setPadding(16,16,16,16);
+                        attachedFile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                checkPermissions(fileURI);
+                            }
+                        });
+                        inner.addView(attachedFile);
+                    }
                     if(com[0] < stage)
                     {
                         final LinearLayout buttons = new LinearLayout(context);
@@ -305,6 +334,7 @@ public class FragmentTasksClass extends Fragment{
             new FetchPointsAndProgress().execute(username);
         }
     }
+
     private class FetchPointsAndProgress extends AsyncTask<String,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/";
@@ -356,5 +386,29 @@ public class FragmentTasksClass extends Fragment{
             else
                 Toast.makeText(getActivity(), "Some Error Occured.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void checkPermissions(String fileURI) {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED)
+                download(fileURI);
+        }
+        else
+            download(fileURI);
+    }
+
+    private void download(String fileURI) {
+        Toast.makeText(getActivity(), "Downloading", Toast.LENGTH_SHORT).show();
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(fileURI));
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        String filename = URLUtil.guessFileName(fileURI, null, MimeTypeMap.getFileExtensionFromUrl(fileURI));
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.enqueue(request);
     }
 }
