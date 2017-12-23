@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -149,6 +150,16 @@ public class HomeActivity extends AppCompatActivity {
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         fade_in = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         fade_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
+        ImageView edit = findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("tcapid", tcapID);
+                intent.putExtra("email", username);
+                startActivity(intent);
+            }
+        });
     }
 
     public void animateFAB() {
@@ -198,12 +209,6 @@ public class HomeActivity extends AppCompatActivity {
         {
             case R.id.leaderboard:
                 startActivity(new Intent(HomeActivity.this, LeaderboardActivity.class));
-                break;
-            case R.id.profile:
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-                intent.putExtra("tcapid", tcapID);
-                intent.putExtra("email", username);
-                startActivity(intent);
                 break;
             case R.id.aboutte:
                 break;
