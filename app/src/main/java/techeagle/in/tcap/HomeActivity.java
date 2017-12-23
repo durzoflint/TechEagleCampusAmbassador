@@ -238,13 +238,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onSignedInInitialize() {
-        imageuri = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();
-        nameOfUser = mFirebaseAuth.getCurrentUser().getDisplayName();
+        try
+        {imageuri = mFirebaseAuth.getCurrentUser().getPhotoUrl().toString();}catch (Exception ignored){}
         if (!Objects.equals(imageuri, "")) {
             Picasso.with(this).load(imageuri).into(profile_image);
         }
-        TextView name = findViewById(R.id.name);
-        name.setText(nameOfUser);
         new Login().execute(username);
     }
 
@@ -315,6 +313,9 @@ public class HomeActivity extends AppCompatActivity {
                 int brI = webPage.indexOf("<br>");
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
+                nameOfUser = webPage.substring(0, brI);
+                webPage = webPage.substring(brI+4);
+                brI = webPage.indexOf("<br>");
                 String tcapID = webPage.substring(0, brI);
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
@@ -322,6 +323,8 @@ public class HomeActivity extends AppCompatActivity {
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
                 String rank = webPage.substring(0, brI);
+                TextView nameText = findViewById(R.id.name);
+                nameText.setText(nameOfUser);
                 TextView tcapid = findViewById(R.id.tcapid);
                 tcapid.setText(tcapID);
                 userpoints.setText("Points\n" + points);
