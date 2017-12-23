@@ -48,7 +48,7 @@ import static java.security.AccessController.getContext;
 public class HomeActivity extends AppCompatActivity {
     CircleImageView profile_image;
     static CustomGauge myGauge;
-    static TextView totalpercentage;
+    static TextView totalpercentage, userrank, userpoints;
     public static final int RC_SIGN_IN = 1;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -92,6 +92,8 @@ public class HomeActivity extends AppCompatActivity {
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
         myGauge = findViewById(R.id.gauge1);
         totalpercentage = findViewById(R.id.totalpercentage);
+        userrank = findViewById(R.id.userrank);
+        userpoints = findViewById(R.id.userpoints);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         profile_image = findViewById(R.id.profile_image);
@@ -119,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCftZVB8RYby7bGqLf8BRqlA/videos")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/TechEagle")));
             }
         });
         fab4 = findViewById(R.id.fab4);
@@ -322,9 +324,7 @@ public class HomeActivity extends AppCompatActivity {
                 String rank = webPage.substring(0, brI);
                 TextView tcapid = findViewById(R.id.tcapid);
                 tcapid.setText(tcapID);
-                TextView userpoints = findViewById(R.id.userpoints);
                 userpoints.setText("Points\n" + points);
-                TextView userrank = findViewById(R.id.userrank);
                 userrank.setText("Rank\n" + rank);
                 SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 ViewPager mViewPager = findViewById(R.id.container);

@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -22,6 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.firebase.ui.auth.AuthUI;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,8 +40,8 @@ import pl.pawelkleczkowski.customgauge.CustomGauge;
 public class FragmentTasksClass extends Fragment{
     View rootView;
     CustomGauge myGauge;
-    TextView totalpercentage;
-    String username, imageuri, name;
+    TextView totalpercentage, userPoints, userRank;
+    String username="", imageuri="", name="";
     int count = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
@@ -46,6 +50,8 @@ public class FragmentTasksClass extends Fragment{
         totalpercentage = HomeActivity.totalpercentage;
         imageuri = HomeActivity.imageuri;
         name = HomeActivity.nameOfUser;
+        userPoints = HomeActivity.userpoints;
+        userRank = HomeActivity.userrank;
         new FetchTasks().execute(username);
         return rootView;
     }
@@ -289,8 +295,9 @@ public class FragmentTasksClass extends Fragment{
             try
             {
                 String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]
-                        +"&userprogress="+strings[2]+"&totalprogress="+myGauge.getValue()+"&imageuri="+imageuri+"&name="+name;
+                        +"&userprogress="+strings[2]+"&totalprogress="+myGauge.getValue()+"&name="+name+"&imageuri="+imageuri;
                 myURL = myURL.replaceAll(" ", "%20");
+                Log.d("Abhinav", myURL);
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -317,6 +324,54 @@ public class FragmentTasksClass extends Fragment{
                 Toast.makeText(getActivity(), "Progress Updated Successfully.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(getActivity(), "Some error occurred.", Toast.LENGTH_LONG).show();
+
+            new FetchPointsAndProgress().execute(username);
+        }
+    }
+    private class FetchPointsAndProgress extends AsyncTask<String,Void,Void> {
+        String webPage="";
+        String baseUrl = "http://www.techeagle.in/tcap/";
+        @Override
+        protected Void doInBackground(String... strings){
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try
+            {
+                String myURL = baseUrl+"fetchprogressandpoints.php?username="+strings[0];
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data=br.readLine()) != null)
+                    webPage=webPage+data;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(webPage.contains("<br>"))
+            {
+                int brI = webPage.indexOf("<br>");
+                String points = webPage.substring(0, brI);
+                webPage = webPage.substring(brI+4);
+                brI = webPage.indexOf("<br>");
+                String rank = webPage.substring(0, brI);
+                userPoints.setText("Points\n" + points);
+                userRank.setText("Rank\n" + rank);
+            }
+            else
+                Toast.makeText(getActivity(), "Some Error Occured.", Toast.LENGTH_LONG).show();
         }
     }
 }
