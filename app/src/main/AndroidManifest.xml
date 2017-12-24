@@ -36,7 +36,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".FeedbackActivity"></activity>
     </application>
 
 </manifest>

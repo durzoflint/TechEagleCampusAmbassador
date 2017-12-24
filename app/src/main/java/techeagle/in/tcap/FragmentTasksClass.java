@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -112,7 +113,7 @@ public class FragmentTasksClass extends Fragment{
                 while (webPage.contains("<br>"))
                 {
                     int brI = webPage.indexOf("<br>");
-                    String name = webPage.substring(0, brI);
+                    final String name = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
                     final String taskid = webPage.substring(0, brI);
@@ -266,6 +267,21 @@ public class FragmentTasksClass extends Fragment{
                         buttons.addView(completedAll);
                         inner.addView(buttons);
                     }
+                    TextView feedback = new TextView(context);
+                    feedback.setText("Raise a query or submit feedback");
+                    feedback.setPadding(16,16,16,16);
+                    feedback.setTextColor(Color.RED);
+                    feedback.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                            intent.putExtra("taskname", name);
+                            intent.putExtra("username", username);
+                            intent.putExtra("taskid", taskid);
+                            startActivity(intent);
+                        }
+                    });
+                    inner.addView(feedback);
                     mid.addView(inner);
                     cardView.addView(mid);
                     outer.addView(cardView);

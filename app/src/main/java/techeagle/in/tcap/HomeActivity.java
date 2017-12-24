@@ -353,8 +353,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public static String getFacebookPageURL(Context context)
-    {
+    public static String getFacebookPageURL(Context context) {
         final String FACEBOOK_PAGE_ID = "1634843790088323";
         final String FACEBOOK_URL = "https://www.facebook.com/TechEagle.in";
         if(appInstalledOrNot(context, "com.facebook.katana"))
@@ -372,8 +371,7 @@ public class HomeActivity extends AppCompatActivity {
             return FACEBOOK_URL;
     }
 
-    private static boolean appInstalledOrNot(Context context, String uri)
-    {
+    private static boolean appInstalledOrNot(Context context, String uri) {
         PackageManager pm = context.getPackageManager();
         try
         {

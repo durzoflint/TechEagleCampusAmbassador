@@ -50,7 +50,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(LeaderboardActivity.this, "Please Wait!","Fetching Leaderboard In!");
+            progressDialog = ProgressDialog.show(LeaderboardActivity.this, "Please Wait!","Fetching Leaderboard!");
             super.onPreExecute();
         }
         @Override
