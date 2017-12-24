@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,14 +22,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FeedbackActivity extends AppCompatActivity {
-
+    Intent intent;
+    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-        Intent intent = getIntent();
         setTitle("Feedback");
-        final String taskId = intent.getStringExtra("taskid");
+        intent = getIntent();
+        taskId = intent.getStringExtra("taskid");
+        myprogress = intent.getStringExtra("progress");
+        myseekbar = intent.getStringExtra("seekbar");
+        completedlabel = intent.getStringExtra("completedLabel");
+        mybuttons = intent.getStringExtra("buttons");
         final String username = intent.getStringExtra("username");
         String taskName = intent.getStringExtra("taskname");
         String displayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -49,6 +55,7 @@ public class FeedbackActivity extends AppCompatActivity {
             }
         });
     }
+
     private class SubmitFeedback extends AsyncTask<String,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/";
@@ -89,9 +96,25 @@ public class FeedbackActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             if(webPage.equals("success"))
+            {
                 Toast.makeText(FeedbackActivity.this, "Your response was submitted successfully.", Toast.LENGTH_SHORT).show();
+                Intent output = new Intent();
+                output.putExtra("completedFeedback", "yes");
+                output.putExtra("taskid", taskId);
+                output.putExtra("progress", myprogress);
+                output.putExtra("seekbar", myseekbar);
+                output.putExtra("completedLabel", completedlabel);
+                output.putExtra("buttons", mybuttons);
+                setResult(RESULT_OK, output);
+                finish();
+            }
             else
                 Toast.makeText(FeedbackActivity.this, "Some error occured!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Feedback required!", Toast.LENGTH_SHORT).show();
     }
 }

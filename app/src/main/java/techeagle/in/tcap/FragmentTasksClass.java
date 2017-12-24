@@ -9,17 +9,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,21 +24,16 @@ import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Abhinav on 16-Dec-17.
@@ -175,11 +165,10 @@ public class FragmentTasksClass extends Fragment{
                     final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
                     seekBar.setOnTouchListener(new View.OnTouchListener()
                     {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
-                    final double com[] = new double[1];
-                    com[0] = Integer.parseInt(completed);
+                    double com = Integer.parseInt(completed);
                     final double stage = Integer.parseInt(stages);
                     seekBar.setMax((int)stage);
-                    seekBar.setProgress((int)com[0]);
+                    seekBar.setProgress((int)com);
                     mid.addView(seekBar);
                     final int id = View.generateViewId();
                     LinearLayout inner = new LinearLayout(context);
@@ -212,7 +201,7 @@ public class FragmentTasksClass extends Fragment{
                         });
                         inner.addView(attachedFile);
                     }
-                    if(com[0] < stage)
+                    if(com < stage)
                     {
                         final LinearLayout buttons = new LinearLayout(context);
                         buttons.setOrientation(LinearLayout.HORIZONTAL);
@@ -233,12 +222,7 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                new AddProgress().execute(username, taskid, "1");
-                                                com[0]++;
-                                                seekBar.setProgress((int)com[0]);
-                                                completedLabel.setText("Completed : " + com[0] + "/" + stage);
-                                                if (com[0] == stage)
-                                                    buttons.setVisibility(View.GONE);
+                                                getFeedBack(taskid, 1, seekBar, completedLabel, buttons);
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -254,10 +238,7 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                new AddProgress().execute(username, taskid, ""+(int)(stage - com[0]));
-                                                seekBar.setProgress((int)stage);
-                                                completedLabel.setText("Completed : " + stage + "/" + stage);
-                                                buttons.setVisibility(View.GONE);
+                                                getFeedBack(taskid, (int)(stage - seekBar.getProgress()), seekBar, completedLabel, buttons);
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -302,7 +283,52 @@ public class FragmentTasksClass extends Fragment{
                 Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
         }
+
+        void getFeedBack(String taskid, int progress, SeekBar seekBar, TextView completedLabel, LinearLayout buttons){
+            Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+            intent.putExtra("taskname", name);
+            intent.putExtra("username", username);
+            intent.putExtra("taskid", taskid);
+            intent.putExtra("progress", progress+"");
+            int seekbarId = View.generateViewId();
+            seekBar.setId(seekbarId);
+            intent.putExtra("seekbar", seekbarId + "");
+            int textviewId = View.generateViewId();
+            completedLabel.setId(textviewId);
+            intent.putExtra("completedLabel", textviewId + "");
+            int linearlayoutId = View.generateViewId();
+            buttons.setId(linearlayoutId);
+            intent.putExtra("buttons", linearlayoutId + "");
+            startActivityForResult(intent, 1);
+        }
+
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            String completedFeedback = data.getStringExtra("completedFeedback");
+            if (completedFeedback.equals("yes"))
+            {
+                String myProgress = data.getStringExtra("progress");
+                String myTaskId = data.getStringExtra("taskid");
+                String seekbarId = data.getStringExtra("seekbar");
+                String textviewId = data.getStringExtra("completedLabel");
+                String linearLayoutId = data.getStringExtra("buttons");
+                new AddProgress().execute(username, myTaskId, myProgress);
+                SeekBar mySeekbar = rootView.findViewById(Integer.parseInt(seekbarId));
+                TextView completedLabel = rootView.findViewById(Integer.parseInt(textviewId));
+                LinearLayout buttons = rootView.findViewById(Integer.parseInt(linearLayoutId));
+                mySeekbar.setProgress(mySeekbar.getProgress() + Integer.parseInt(myProgress));
+                int com = mySeekbar.getProgress();
+                int stages = mySeekbar.getMax();
+                completedLabel.setText("Completed : " + com + "/" + stages);
+                if (com == stages)
+                    buttons.setVisibility(View.GONE);
+            }
+        }
+    }
+
     private class AddProgress extends AsyncTask<String,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/";
@@ -319,7 +345,7 @@ public class FragmentTasksClass extends Fragment{
             try
             {
                 String myURL = baseUrl+"addprogress.php?username="+strings[0]+"&taskid="+strings[1]
-                        +"&userprogress="+strings[2]+"&name="+name+"&imageuri="+imageuri;
+                        +"&userprogress="+strings[2]+"&imageuri="+imageuri;
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -405,11 +431,11 @@ public class FragmentTasksClass extends Fragment{
     }
 
     public void checkPermissions(String fileURI) {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED)
                 download(fileURI);
         }
