@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,10 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
-                String facebookUrl = getFacebookPageURL(HomeActivity.this);
-                facebookIntent.setData(Uri.parse(facebookUrl));
-                startActivity(facebookIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/_u/TechEagle.in/")));
             }
         });
         fab3 = findViewById(R.id.fab3);
@@ -129,7 +127,10 @@ public class HomeActivity extends AppCompatActivity {
         fab4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/_u/TechEagle.in/")));
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+                String facebookUrl = getFacebookPageURL(HomeActivity.this);
+                facebookIntent.setData(Uri.parse(facebookUrl));
+                startActivity(facebookIntent);
             }
         });
         fab5 = findViewById(R.id.fab5);
@@ -158,6 +159,18 @@ public class HomeActivity extends AppCompatActivity {
                 intent.putExtra("tcapid", tcapID);
                 intent.putExtra("email", username);
                 startActivity(intent);
+            }
+        });
+        LinearLayout display = findViewById(R.id.display);
+        display.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LinearLayout status = findViewById(R.id.status);
+                int visibility = status.getVisibility();
+                if (visibility == View.VISIBLE)
+                    status.setVisibility(View.GONE);
+                else
+                    status.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -216,8 +229,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(this)
-                        .setTitle("Really Logout?")
-                        .setMessage("Are you sure you want to Logout?")
+                        .setTitle("Are you sure you want to Logout?")
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {

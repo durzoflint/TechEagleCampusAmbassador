@@ -23,13 +23,14 @@ import java.net.URL;
 
 public class FeedbackActivity extends AppCompatActivity {
     Intent intent;
-    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "";
+    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "", direct="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         setTitle("Feedback");
         intent = getIntent();
+        direct = intent.getStringExtra("direct");
         taskId = intent.getStringExtra("taskid");
         myprogress = intent.getStringExtra("progress");
         myseekbar = intent.getStringExtra("seekbar");
@@ -115,6 +116,13 @@ public class FeedbackActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Feedback required!", Toast.LENGTH_SHORT).show();
+        try
+        {
+            if(direct.equals("yes"))
+                super.onBackPressed();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Feedback required!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

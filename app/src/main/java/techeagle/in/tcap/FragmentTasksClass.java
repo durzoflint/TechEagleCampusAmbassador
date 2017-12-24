@@ -57,6 +57,7 @@ public class FragmentTasksClass extends Fragment{
         new FetchPointsAndProgress().execute(username);
         return rootView;
     }
+
     private class FetchTasks extends AsyncTask<String,Void,Void> {
         Context context = getActivity();
         String webPage="";
@@ -249,7 +250,7 @@ public class FragmentTasksClass extends Fragment{
                         inner.addView(buttons);
                     }
                     TextView feedback = new TextView(context);
-                    feedback.setText("Raise a query or submit feedback");
+                    feedback.setText("Ask a question");
                     feedback.setPadding(16,16,16,16);
                     feedback.setTextColor(Color.RED);
                     feedback.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +260,7 @@ public class FragmentTasksClass extends Fragment{
                             intent.putExtra("taskname", name);
                             intent.putExtra("username", username);
                             intent.putExtra("taskid", taskid);
+                            intent.putExtra("direct","yes");
                             startActivity(intent);
                         }
                     });

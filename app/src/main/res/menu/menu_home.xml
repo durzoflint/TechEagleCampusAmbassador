@@ -13,6 +13,11 @@
         android:title="Leaderboard"
         app:showAsAction="never" />
     <item
+        android:id="@+id/guidelines"
+        android:orderInCategory="100"
+        android:title="Guidelines"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/aboutte"
         android:orderInCategory="100"
         android:title="About Us"

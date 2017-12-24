@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "techeagle.in.tcap"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.seekbar.runner.AndroidJUnitRunner"

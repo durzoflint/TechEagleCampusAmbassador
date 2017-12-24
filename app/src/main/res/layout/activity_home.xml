@@ -29,17 +29,17 @@
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/display"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryLight"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingStart="8dp"
+            android:paddingBottom="4dp"
             android:paddingEnd="8dp"
-            android:paddingBottom="4dp">
+            android:paddingStart="8dp"
+            android:paddingTop="8dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -50,9 +50,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -91,19 +91,20 @@
             android:layout_marginEnd="8dp"/>
 
         <LinearLayout
+            android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryLight"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
             android:paddingEnd="8dp"
+            android:paddingStart="8dp"
             android:paddingTop="4dp">
 
             <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -138,10 +139,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/userrank"
@@ -154,10 +155,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/userpoints"
@@ -207,6 +208,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:visibility="visible"
         app:backgroundTint="@color/colorPrimaryDark"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
@@ -221,10 +223,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        app:backgroundTint="@color/fui_bgFacebook"
+        app:backgroundTint="@android:color/white"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/com_facebook_button_icon_blue" />
+        app:srcCompat="@drawable/instagram" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
@@ -249,10 +251,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        app:backgroundTint="@android:color/white"
+        app:backgroundTint="@color/fui_bgFacebook"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/instagram" />
+        app:srcCompat="@drawable/com_facebook_button_icon_blue" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab5"
@@ -262,7 +264,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:backgroundTint="@color/googleplusbackground"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
