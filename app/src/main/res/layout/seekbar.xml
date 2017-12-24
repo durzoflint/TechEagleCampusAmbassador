@@ -4,5 +4,5 @@
     style="@style/Widget.AppCompat.SeekBar.Discrete"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:progressTint="@color/colorPrimary"
-    android:thumbTint="@color/colorPrimary" />
+    android:progressTint="@color/colorAccent"
+    android:thumbTint="@color/colorAccent" />

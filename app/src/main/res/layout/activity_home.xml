@@ -32,7 +32,7 @@
             android:id="@+id/display"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
+            android:background="@color/colorAccent"
             android:orientation="horizontal"
             android:paddingBottom="4dp"
             android:paddingEnd="8dp"
@@ -43,9 +43,7 @@
                 android:id="@+id/profile_image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@mipmap/ic_launcher_round"
-                app:civ_border_color="@color/colorPrimaryDark"
-                app:civ_border_width="2dp" />
+                android:src="@mipmap/ic_launcher_round"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -62,6 +60,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="name"
+                    android:textColor="@color/cardview_dark_background"
                     android:textSize="20sp" />
 
                 <TextView
@@ -72,6 +71,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center_horizontal"
                     android:text="tcapid"
+                    android:textColor="@color/cardview_dark_background"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -84,21 +84,16 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
-
         <LinearLayout
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
+            android:background="@color/colorAccent"
             android:orientation="horizontal"
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
-            android:paddingTop="4dp">
+            android:paddingTop="4dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,6 +127,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:text="Not available"
+                        android:textColor="@color/cardview_dark_background"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -149,7 +145,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Rank\n58"
+                    android:text="Rank\n#"
+                    android:textColor="@color/cardview_dark_background"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -165,7 +162,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Points\n146"
+                    android:text="Points\n#"
+                    android:textColor="@color/cardview_dark_background"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -209,10 +207,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="visible"
-        app:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="@color/colorAccent"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@android:drawable/ic_menu_share" />
+        app:srcCompat="@drawable/share" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab2"

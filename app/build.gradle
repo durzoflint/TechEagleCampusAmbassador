@@ -32,5 +32,6 @@ dependencies {
     compile 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
     compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'me.biubiubiu.justifytext:library:1.1'
 }
 apply plugin: 'com.google.gms.google-services'
