@@ -14,6 +14,7 @@
         android:padding="16dp">
 
         <LinearLayout
+            style="@android:style/Widget.Spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/cardview_light_background"
@@ -22,14 +23,25 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/firstname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:layout_marginTop="16dp"
                 android:ems="12"
                 android:gravity="center_horizontal"
-                android:hint="Name"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/lastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:ems="12"
+                android:gravity="center_horizontal"
+                android:hint="Last Name"
                 android:inputType="textPersonName"
                 android:textSize="18sp" />
 
@@ -39,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Email ID"
                 android:textSize="18sp" />
 
             <TextView
@@ -48,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:gravity="center_horizontal"
-                android:text="TextView"
+                android:text="Tech Eagle ID"
                 android:textSize="18sp" />
 
             <EditText
@@ -58,20 +70,17 @@
                 android:layout_marginBottom="32dp"
                 android:ems="12"
                 android:gravity="center_horizontal"
-                android:hint="Number"
+                android:hint="Mobile Number"
                 android:inputType="textPersonName"
                 android:textSize="18sp" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:ems="12"
-                android:gravity="center_horizontal"
-                android:hint="Gender"
-                android:inputType="textPersonName"
-                android:textSize="18sp" />
+                android:entries="@array/gender_array"
+                android:gravity="center_horizontal"/>
 
             <EditText
                 android:id="@+id/dob"
@@ -80,7 +89,7 @@
                 android:layout_marginBottom="32dp"
                 android:ems="12"
                 android:gravity="center_horizontal"
-                android:hint="Date of Birth(DDMMYYYY)"
+                android:hint="Date of Birth (DD/MM/YYYY)"
                 android:inputType="textPersonName"
                 android:textSize="18sp" />
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProfileActivity extends AppCompatActivity {
-    EditText name, number, dob, gender, address;
+    EditText firstname, lastname, number, dob, address;
+    Spinner gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
         email.setText(username);
         TextView tcapid = findViewById(R.id.tcapid);
         tcapid.setText(userTCAPID);
-        name = findViewById(R.id.name);
+        firstname = findViewById(R.id.firstname);
+        lastname = findViewById(R.id.lastname);
         number = findViewById(R.id.number);
         dob = findViewById(R.id.dob);
         gender = findViewById(R.id.gender);
@@ -48,20 +51,64 @@ public class ProfileActivity extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String date = dob.getText().toString();
-                if (isValidDate(date))
-                    new UpdateUserDetails().execute(username, name.getText().toString(), number.getText().toString(),
-                        dob.getText().toString(), gender.getText().toString(), address.getText().toString());
-                else
-                    Toast.makeText(ProfileActivity.this, "Invalid Date. Please use DD/MM/YYYY", Toast.LENGTH_SHORT).show();
+                if (formIsValid())
+                    new UpdateUserDetails().execute(username, firstname.getText().toString().trim(), lastname.getText().toString(),
+                            number.getText().toString(), dob.getText().toString(), gender.getSelectedItem().toString(), address.getText().toString());
             }
         });
     }
 
-    public static boolean isValidDate(String date) {
-        SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date d=dateFormat.parse(date);
+    private boolean formIsValid() {
+        if (firstname.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "First Name cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (lastname.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "Last Name cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (number.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "Number cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!isValidDate())
+        {
+            Toast.makeText(this, "Invalid Date. Please use DD/MM/YYYY format", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (address.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "Address cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isValidDate() {
+        String date = dob.getText().toString();
+        try
+        {
+            String day = date.substring(0,2);
+            if (day.length()!=2)
+                throw new Exception();
+            String month = date.substring(3,5);
+            if (month.length()!=2)
+                throw new Exception();
+            String year = date.substring(6);
+            if (year.length()!=4)
+                throw new Exception();
+            int dd = Integer.parseInt(day);
+            if (dd < 1 || dd > 31)
+                throw new Exception();
+            int mm = Integer.parseInt(month);
+            if (mm < 1 || mm > 12)
+                throw new Exception();
+            int yyyy = Integer.parseInt(year);
+            if (yyyy < 1990 || yyyy > 2100)
+                throw new Exception();
             return true;
         }
         catch(Exception e) {
@@ -84,8 +131,8 @@ public class ProfileActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"updateuserdetails.php?username="+strings[0]+"&name="+strings[1]
-                        +"&number="+strings[2]+"&dob="+strings[3]+"&gender="+strings[4]+"&address="+strings[5];
+                String myURL = baseUrl+"updateuserdetails.php?username="+strings[0]+"&firstname="+strings[1]+"&lastname="+strings[2]
+                        +"&number="+strings[3]+"&dob="+strings[4]+"&gender="+strings[5]+"&address="+strings[6];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -156,7 +203,10 @@ public class ProfileActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             int brI = webPage.indexOf("<br>");
-            name.setText(webPage.substring(0, brI));
+            firstname.setText(webPage.substring(0, brI));
+            webPage = webPage.substring(brI+4);
+            brI = webPage.indexOf("<br>");
+            lastname.setText(webPage.substring(0, brI));
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
             number.setText(webPage.substring(0, brI));
@@ -165,11 +215,23 @@ public class ProfileActivity extends AppCompatActivity {
             dob.setText(webPage.substring(0, brI));
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
-            gender.setText(webPage.substring(0, brI));
+            String sex = webPage.substring(0, brI);
+            if (sex.equals("Male"))
+                gender.setSelection(0);
+            else if (sex.equals("Female"))
+                gender.setSelection(1);
+            else
+                gender.setSelection(2);
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
             address.setText(webPage.substring(0, brI));
             webPage = webPage.substring(brI+4);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (formIsValid())
+            super.onBackPressed();
     }
 }
