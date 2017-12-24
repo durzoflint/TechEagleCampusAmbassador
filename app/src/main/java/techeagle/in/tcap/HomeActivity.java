@@ -328,22 +328,32 @@ public class HomeActivity extends AppCompatActivity {
                 webPage = webPage.substring(brI+4);
                 brI = webPage.indexOf("<br>");
                 tcapID = webPage.substring(0, brI);
-                webPage = webPage.substring(brI+4);
-                brI = webPage.indexOf("<br>");
-                String points = webPage.substring(0, brI);
-                webPage = webPage.substring(brI+4);
-                brI = webPage.indexOf("<br>");
-                String rank = webPage.substring(0, brI);
-                TextView nameText = findViewById(R.id.name);
-                nameText.setText(nameOfUser);
-                TextView tcapid = findViewById(R.id.tcapid);
-                tcapid.setText(tcapID);
-                userpoints.setText("Points\n" + points);
-                userrank.setText("Rank\n" + rank);
-                SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                ViewPager mViewPager = findViewById(R.id.container);
-                mViewPager.setAdapter(mSectionsPagerAdapter);
-                mViewPager.setOffscreenPageLimit(1);
+                if (nameOfUser.isEmpty())
+                {
+                    Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                    intent.putExtra("tcapid", tcapID);
+                    intent.putExtra("email", username);
+                    startActivity(intent);
+                }
+                else
+                {
+                    webPage = webPage.substring(brI+4);
+                    brI = webPage.indexOf("<br>");
+                    String points = webPage.substring(0, brI);
+                    webPage = webPage.substring(brI+4);
+                    brI = webPage.indexOf("<br>");
+                    String rank = webPage.substring(0, brI);
+                    TextView nameText = findViewById(R.id.name);
+                    nameText.setText(nameOfUser);
+                    TextView tcapid = findViewById(R.id.tcapid);
+                    tcapid.setText(tcapID);
+                    userpoints.setText("Points\n" + points);
+                    userrank.setText("Rank\n" + rank);
+                    SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                    ViewPager mViewPager = findViewById(R.id.container);
+                    mViewPager.setAdapter(mSectionsPagerAdapter);
+                    mViewPager.setOffscreenPageLimit(1);
+                }
             }
             else
             {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         TextView email = findViewById(R.id.email);
         email.setText(username);
         TextView tcapid = findViewById(R.id.tcapid);
-        tcapid.setText(userTCAPID);
+        tcapid.setText("TechEagle ID : " + userTCAPID);
         firstname = findViewById(R.id.firstname);
         lastname = findViewById(R.id.lastname);
         number = findViewById(R.id.number);
@@ -157,7 +158,13 @@ public class ProfileActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             if (webPage.equals("success"))
-                Toast.makeText(ProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
+            {
+                Toast.makeText(ProfileActivity.this, "Profile Updated Successfully. Restarting App.", Toast.LENGTH_SHORT).show();
+                Intent i = getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
             else
                 Toast.makeText(ProfileActivity.this, "Some Error Occured", Toast.LENGTH_SHORT).show();
         }
