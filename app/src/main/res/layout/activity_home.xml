@@ -279,9 +279,9 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
-        app:backgroundTint="@android:color/white"
+        app:backgroundTint="@color/colorBackground"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/logogrey" />
+        app:srcCompat="@drawable/logo" />
 
 </RelativeLayout>

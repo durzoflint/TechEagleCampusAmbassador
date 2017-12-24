@@ -224,8 +224,10 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this, LeaderboardActivity.class));
                 break;
             case R.id.aboutte:
+                startActivity(new Intent(HomeActivity.this, AboutTEActivity.class));
                 break;
             case R.id.aboutapp:
+                startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(this)

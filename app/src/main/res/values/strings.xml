@@ -2,6 +2,8 @@
     <string name="app_name">TCAP</string>
     <string name="title_activity_home">TCAP</string>
     <string name="tab_text_1">Tasks</string>
+    <string name="about_app">Greetings!\nWelcome onboard.\n\nTo make our communication more convenient, we\'ll send regular task updates via this app only. Hope you have a great experience as a Campus Ambassador with TechEagle.</string>
+    <string name="about_te">TechEagle is a startup of an alumnus of IIT Kanpur. We specialize advance Drone/UAV manufacturing, development, services and in imparting Technical and Practical knowledge to the country’s youth in the field of Unmanned Aerial Vehicles/Drones. Our mission is to bridge the gap between the students’ theoretical and practical knowledge thus providing them a head-start in the UAV/Drone Industry.\n\nCurrently, we are making UAVs of various scale(60cm wingspan to 5 meter wingspan). We are providing workshops on UAVs/DRONEs like the Introduction to Autonomous Drone, RC Trainer Aircraft, RC Aerobatic Aircraft, RC Flying Wing, RC Quadcopter Drone, RC Tricopter Drone and Trainings like the Summer &amp; Winter UAV/Drone Training, Autopilot training, Professional Flying etc. These workshops and trainings have been designed to give participants the best knowledge &amp; skills while giving them a taste of Team-Work. The craftsmanship and skills you acquire will form the base to help you design and understand complex engineering systems, more than enough to make a difference in the aviation industry.</string>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>

@@ -48,7 +48,9 @@
         </service>
 
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".FeedbackActivity"/>
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".AboutTEActivity" />
+        <activity android:name=".AboutAppActivity"></activity>
     </application>
 
 </manifest>
