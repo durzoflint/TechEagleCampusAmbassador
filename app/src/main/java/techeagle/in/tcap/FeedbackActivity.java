@@ -2,6 +2,7 @@ package techeagle.in.tcap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,8 +74,16 @@ public class FeedbackActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"submitfeedback.php?username="+strings[0]+"&taskid="+strings[1]+"&feedback="+strings[2];
-                myURL = myURL.replaceAll(" ", "%20");
+                String myURL = baseUrl+"submitfeedback.php?username="+strings[0]+"&taskid="+strings[1]+"&feedback="+ Uri.encode(strings[2]);
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                Log.d("Abhinav", myURL);
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

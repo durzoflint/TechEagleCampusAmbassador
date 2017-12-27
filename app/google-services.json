@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1027069492094-57pt4vvbaedokicni1jtmppnsv7iigbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "techeagle.in.tcap",
+            "certificate_hash": "ea2c9a6af91d8b72eb48e255e99255d1462f12c3"
+          }
+        },
+        {
+          "client_id": "1027069492094-nscuodb7icnmge7j2ls6g9ivs5c2h7n2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "techeagle.in.tcap",
+            "certificate_hash": "d7e62bf3853dd843ec3f087f01b017d5e8c299e4"
+          }
+        },
+        {
+          "client_id": "1027069492094-qr5nj35l54qmpfdkh5vokaerg7fkhapf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "techeagle.in.tcap",
+            "certificate_hash": "059b79f54ac1d5d9b8240f36b336c6930c324ee3"
+          }
+        },
+        {
           "client_id": "1027069492094-tihlgpfscuutbj2q1364efepgmj16s8t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

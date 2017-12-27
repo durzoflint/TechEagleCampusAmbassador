@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -61,7 +62,7 @@ public class FragmentTasksClass extends Fragment{
     private class FetchTasks extends AsyncTask<String,Void,Void> {
         Context context = getActivity();
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
@@ -99,12 +100,15 @@ public class FragmentTasksClass extends Fragment{
             super.onPostExecute(aVoid);
             if(webPage.contains("<br>"))
             {
-                LinearLayout data = rootView.findViewById(R.id.data);
-                data.removeAllViews();
+                LinearLayout onGoing = rootView.findViewById(R.id.data);
+                onGoing.removeAllViews();
+                LinearLayout expiredData = rootView.findViewById(R.id.dataexpired);
+                expiredData.removeAllViews();
+                LinearLayout data;
                 while (webPage.contains("<br>"))
                 {
                     int brI = webPage.indexOf("<br>");
-                    final String name = webPage.substring(0, brI);
+                    final String taskname = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
                     final String taskid = webPage.substring(0, brI);
@@ -129,6 +133,17 @@ public class FragmentTasksClass extends Fragment{
                     String file = webPage.substring(0, brI);
                     final String fileURI = file.replaceAll(" ", "%20");
                     webPage = webPage.substring(brI + 4);
+                    brI = webPage.indexOf("<br>");
+                    String expired = webPage.substring(0, brI);
+                    webPage = webPage.substring(brI + 4);
+                    if (expired.equals("yes"))
+                    {
+                        TextView expiredLabel = rootView.findViewById(R.id.expiredlabel);
+                        expiredLabel.setVisibility(View.VISIBLE);
+                        data = expiredData;
+                    }
+                    else
+                        data = onGoing;
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
@@ -146,7 +161,7 @@ public class FragmentTasksClass extends Fragment{
                     title.setOrientation(LinearLayout.HORIZONTAL);
                     TextView nameLabel = new TextView(context);
                     nameLabel.setLayoutParams(matchParams);
-                    nameLabel.setText(name);
+                    nameLabel.setText(taskname);
                     nameLabel.setTextColor(getResources().getColor(R.color.colorBackground));
                     nameLabel.setTextSize(24);
                     nameLabel.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -222,7 +237,19 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                getFeedBack(taskid, 1, seekBar, completedLabel, buttons);
+                                                int com = seekBar.getProgress() + 1;
+                                                int stages = seekBar.getMax();
+                                                if (com == stages)
+                                                {
+                                                    buttons.setVisibility(View.GONE);
+                                                    getFeedBack(taskname, taskid, 1, seekBar, completedLabel, buttons);
+                                                }
+                                                else
+                                                {
+                                                    new AddProgress().execute(username, taskid, 1+"");
+                                                    seekBar.setProgress(com);
+                                                    completedLabel.setText("Completed : " + com + "/" + stages);
+                                                }
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -238,7 +265,7 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-                                                getFeedBack(taskid, (int)(stage - seekBar.getProgress()), seekBar, completedLabel, buttons);
+                                                getFeedBack(taskname, taskid, (int)(stage - seekBar.getProgress()), seekBar, completedLabel, buttons);
                                             }
                                         })
                                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -256,7 +283,7 @@ public class FragmentTasksClass extends Fragment{
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-                            intent.putExtra("taskname", name);
+                            intent.putExtra("taskname", taskname);
                             intent.putExtra("username", username);
                             intent.putExtra("taskid", taskid);
                             intent.putExtra("direct","yes");
@@ -281,13 +308,14 @@ public class FragmentTasksClass extends Fragment{
                 }
             }
             else
-                Toast.makeText(getActivity(), "Some Error Occurred.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Some Error Occurred while Fetching Tasks", Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         }
 
-        void getFeedBack(String taskid, int progress, SeekBar seekBar, TextView completedLabel, LinearLayout buttons){
+        void getFeedBack(String taskname, String taskid, int progress, SeekBar seekBar,
+                         TextView completedLabel, LinearLayout buttons){
             Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-            intent.putExtra("taskname", name);
+            intent.putExtra("taskname", taskname);
             intent.putExtra("username", username);
             intent.putExtra("taskid", taskid);
             intent.putExtra("progress", progress+"");
@@ -332,7 +360,7 @@ public class FragmentTasksClass extends Fragment{
 
     private class AddProgress extends AsyncTask<String,Void,Void> {
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
@@ -380,7 +408,7 @@ public class FragmentTasksClass extends Fragment{
 
     private class FetchPointsAndProgress extends AsyncTask<String,Void,Void> {
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
         @Override
         protected Void doInBackground(String... strings){
             URL url;
