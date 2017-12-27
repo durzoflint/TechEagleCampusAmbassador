@@ -33,6 +33,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import pl.pawelkleczkowski.customgauge.CustomGauge;
 import static android.app.Activity.RESULT_OK;
 
@@ -143,7 +148,27 @@ public class FragmentTasksClass extends Fragment{
                         data = expiredData;
                     }
                     else
+                    {
                         data = onGoing;
+                        try
+                        {
+                            Date curDate = new Date();
+                            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                            Date date = format.parse(deadline);
+                            long diffInMillisec =date.getTime()- curDate.getTime();
+                            long daysDiff = TimeUnit.MILLISECONDS.toDays(diffInMillisec);
+                            long hoursDiff = TimeUnit.MILLISECONDS.toHours(diffInMillisec);
+                            long minsDiff = TimeUnit.MILLISECONDS.toMinutes(diffInMillisec);
+                            if (daysDiff >= 2)
+                                deadline = daysDiff + " Days Left";
+                            else if (daysDiff < 2 && hoursDiff >= 1)
+                                deadline = hoursDiff + " Hours Left";
+                            else if (daysDiff < 2 && hoursDiff < 1)
+                                deadline = minsDiff + " Minutes left";
+                        }catch (ParseException ignored){
+                        }
+                    }
+
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
