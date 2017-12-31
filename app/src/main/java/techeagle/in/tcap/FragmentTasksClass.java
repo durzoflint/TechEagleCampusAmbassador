@@ -168,7 +168,6 @@ public class FragmentTasksClass extends Fragment{
                         }catch (ParseException ignored){
                         }
                     }
-
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
                     LinearLayout outer = new LinearLayout(context);
@@ -241,7 +240,7 @@ public class FragmentTasksClass extends Fragment{
                         });
                         inner.addView(attachedFile);
                     }
-                    if(com < stage)
+                    if(com < stage && expired.equals("no"))
                     {
                         final LinearLayout buttons = new LinearLayout(context);
                         buttons.setOrientation(LinearLayout.HORIZONTAL);
