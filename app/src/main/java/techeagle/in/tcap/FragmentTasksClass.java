@@ -113,6 +113,9 @@ public class FragmentTasksClass extends Fragment{
                 while (webPage.contains("<br>"))
                 {
                     int brI = webPage.indexOf("<br>");
+                    String tasknumber = webPage.substring(0, brI);
+                    webPage = webPage.substring(brI + 4);
+                    brI = webPage.indexOf("<br>");
                     final String taskname = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br>");
@@ -178,6 +181,8 @@ public class FragmentTasksClass extends Fragment{
                     }
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+                    LinearLayout.LayoutParams wrapParams = new LinearLayout.LayoutParams
+                            (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     final LinearLayout outer = new LinearLayout(context);
                     outer.setLayoutParams(matchParams);
                     outer.setOrientation(LinearLayout.VERTICAL);
@@ -191,14 +196,23 @@ public class FragmentTasksClass extends Fragment{
                     LinearLayout title = new LinearLayout(context);
                     title.setLayoutParams(matchParams);
                     title.setOrientation(LinearLayout.HORIZONTAL);
+                    TextView tasknumberLabel = new TextView(context);
+                    tasknumberLabel.setLayoutParams(wrapParams);
+                    tasknumberLabel.setTextColor(getResources().getColor(R.color.colorBackground));
+                    tasknumberLabel.setText(tasknumber+") ");
+                    tasknumberLabel.setTextSize(20);
+                    title.addView(tasknumberLabel);
                     TextView nameLabel = new TextView(context);
-                    nameLabel.setLayoutParams(matchParams);
+                    nameLabel.setLayoutParams(wrapParams);
                     nameLabel.setText(taskname);
                     nameLabel.setTextColor(getResources().getColor(R.color.colorBackground));
-                    nameLabel.setTextSize(24);
-                    nameLabel.setGravity(Gravity.CENTER_HORIZONTAL);
+                    nameLabel.setTextSize(20);
                     title.addView(nameLabel);
                     mid.addView(title);
+                    TextView deadlineLabel = new TextView(context);
+                    deadlineLabel.setText("Deadline : " + deadline);
+                    deadlineLabel.setTextSize(18);
+                    mid.addView(deadlineLabel);
                     LayoutInflater progressInflater = LayoutInflater.from(context);
                     final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
                     seekBar.setOnTouchListener(new View.OnTouchListener()
@@ -214,22 +228,18 @@ public class FragmentTasksClass extends Fragment{
                     inner.setId(id);
                     final TextView completedLabel = new TextView(context);
                     completedLabel.setText("Completed : " + completed + "/" + stages);
-                    completedLabel.setTextSize(20);
+                    completedLabel.setTextSize(18);
                     completedLabel.setGravity(Gravity.CENTER);
                     inner.addView(completedLabel);
-                    TextView deadlineLabel = new TextView(context);
-                    deadlineLabel.setText("Deadline : " + deadline);
-                    deadlineLabel.setTextSize(20);
-                    inner.addView(deadlineLabel);
                     TextView rewardPointsLabel = new TextView(context);
                     rewardPointsLabel.setLayoutParams(matchParams);
                     rewardPointsLabel.setText("Reward Points : " + rewardPoints+"\n");
-                    rewardPointsLabel.setTextSize(20);
+                    rewardPointsLabel.setTextSize(18);
                     inner.addView(rewardPointsLabel);
                     TextView detailsLabel = new TextView(context);
                     detailsLabel.setText("Details : " + details);
                     detailsLabel.setPadding(8,0,8,8);
-                    detailsLabel.setTextSize(20);
+                    detailsLabel.setTextSize(18);
                     //detailsLabel.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     inner.addView(detailsLabel);
                     if (fileURI.length() > 0)
@@ -237,6 +247,7 @@ public class FragmentTasksClass extends Fragment{
                         TextView attachedFile = new TextView(context);
                         attachedFile.setText("Download attached file");
                         attachedFile.setTextColor(getResources().getColor(R.color.colorAccent));
+                        detailsLabel.setTextSize(16);
                         attachedFile.setPadding(16,16,16,16);
                         attachedFile.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -318,6 +329,7 @@ public class FragmentTasksClass extends Fragment{
                     TextView feedback = new TextView(context);
                     feedback.setText("Ask a question");
                     feedback.setPadding(16,16,16,16);
+                    feedback.setTextSize(16);
                     feedback.setTextColor(Color.RED);
                     feedback.setOnClickListener(new View.OnClickListener() {
                         @Override

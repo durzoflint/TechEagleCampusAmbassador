@@ -60,7 +60,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:text="name"
-                    android:textColor="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_light_background"
                     android:textSize="20sp" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center_horizontal"
                     android:text="tcapid"
-                    android:textColor="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_light_background"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -127,7 +127,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:text="Not available"
-                        android:textColor="@color/cardview_dark_background"
+                        android:textColor="@color/cardview_light_background"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Rank\n#"
-                    android:textColor="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_light_background"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Points\n#"
-                    android:textColor="@color/cardview_dark_background"
+                    android:textColor="@color/cardview_light_background"
                     android:textSize="18sp" />
 
             </LinearLayout>

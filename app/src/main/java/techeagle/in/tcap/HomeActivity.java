@@ -174,11 +174,21 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        final LinearLayout status = findViewById(R.id.status);
         LinearLayout display = findViewById(R.id.display);
         display.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinearLayout status = findViewById(R.id.status);
+                int visibility = status.getVisibility();
+                if (visibility == View.VISIBLE)
+                    status.setVisibility(View.GONE);
+                else
+                    status.setVisibility(View.VISIBLE);
+            }
+        });
+        status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 int visibility = status.getVisibility();
                 if (visibility == View.VISIBLE)
                     status.setVisibility(View.GONE);
