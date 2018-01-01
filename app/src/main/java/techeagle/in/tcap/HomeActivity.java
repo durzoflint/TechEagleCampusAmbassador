@@ -19,7 +19,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,26 +30,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.pawelkleczkowski.customgauge.CustomGauge;
-
-import static java.security.AccessController.getContext;
 
 public class HomeActivity extends AppCompatActivity {
     CircleImageView profile_image;
@@ -316,7 +309,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private class Login extends AsyncTask<String,Void,Void> {
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){

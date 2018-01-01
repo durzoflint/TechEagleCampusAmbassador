@@ -4,19 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -61,7 +56,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     private class SubmitFeedback extends AsyncTask<String,Void,Void> {
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/";
+        String baseUrl = "http://www.techeagle.in/tcap/v2";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
