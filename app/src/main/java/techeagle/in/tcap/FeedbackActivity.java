@@ -56,7 +56,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     private class SubmitFeedback extends AsyncTask<String,Void,Void> {
         String webPage="";
-        String baseUrl = "http://www.techeagle.in/tcap/v2";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
