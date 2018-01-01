@@ -93,7 +93,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +84,12 @@ public class HomeActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     username = user.getEmail();
+                    String provider = user.getProviders().get(0);
+                    if (provider.equals("password"))
+                    {
+                        Toast.makeText(HomeActivity.this, "We recommend using your google account to login.", Toast.LENGTH_SHORT).show();
+                        AuthUI.getInstance().signOut(HomeActivity.this);
+                    }
                     onSignedInInitialize();
                 }
                 else
