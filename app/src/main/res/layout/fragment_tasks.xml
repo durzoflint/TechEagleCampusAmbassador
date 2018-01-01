@@ -54,6 +54,26 @@
                 android:paddingStart="8dp"
                 android:paddingTop="16dp" />
 
+            <TextView
+                android:id="@+id/completedlabeltop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="Completed Tasks"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/datacompleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="16dp" />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -109,6 +109,8 @@ public class FragmentTasksClass extends Fragment{
                 onGoing.removeAllViews();
                 LinearLayout expiredData = rootView.findViewById(R.id.dataexpired);
                 expiredData.removeAllViews();
+                final LinearLayout completedData = rootView.findViewById(R.id.datacompleted);
+                completedData.removeAllViews();
                 LinearLayout data;
                 while (webPage.contains("<br>"))
                 {
@@ -141,11 +143,19 @@ public class FragmentTasksClass extends Fragment{
                     brI = webPage.indexOf("<br>");
                     String expired = webPage.substring(0, brI);
                     webPage = webPage.substring(brI + 4);
+                    double com = Integer.parseInt(completed);
+                    final double stage = Integer.parseInt(stages);
                     if (expired.equals("yes"))
                     {
                         TextView expiredLabel = rootView.findViewById(R.id.expiredlabel);
                         expiredLabel.setVisibility(View.VISIBLE);
                         data = expiredData;
+                    }
+                    else if (com >= stage)
+                    {
+                        TextView completedLabelTop = rootView.findViewById(R.id.completedlabeltop);
+                        completedLabelTop.setVisibility(View.VISIBLE);
+                        data = completedData;
                     }
                     else
                     {
@@ -170,11 +180,11 @@ public class FragmentTasksClass extends Fragment{
                     }
                     LinearLayout.LayoutParams matchParams = new LinearLayout.LayoutParams
                             (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
-                    LinearLayout outer = new LinearLayout(context);
+                    final LinearLayout outer = new LinearLayout(context);
                     outer.setLayoutParams(matchParams);
                     outer.setOrientation(LinearLayout.VERTICAL);
                     outer.setPadding(0,0,0,30);
-                    CardView cardView = new CardView(context);
+                    final CardView cardView = new CardView(context);
                     cardView.setLayoutParams(matchParams);
                     LinearLayout mid = new LinearLayout(context);
                     mid.setLayoutParams(matchParams);
@@ -195,8 +205,6 @@ public class FragmentTasksClass extends Fragment{
                     final SeekBar seekBar = (SeekBar) progressInflater.inflate(R.layout.seekbar, null);
                     seekBar.setOnTouchListener(new View.OnTouchListener()
                     {@Override public boolean onTouch(View view, MotionEvent motionEvent) {return true;}});
-                    double com = Integer.parseInt(completed);
-                    final double stage = Integer.parseInt(stages);
                     seekBar.setMax((int)stage);
                     seekBar.setProgress((int)com);
                     mid.addView(seekBar);
@@ -266,6 +274,11 @@ public class FragmentTasksClass extends Fragment{
                                                 if (com == stages)
                                                 {
                                                     buttons.setVisibility(View.GONE);
+                                                    TextView completedLabelTop = rootView.findViewById(R.id.completedlabeltop);
+                                                    completedLabelTop.setVisibility(View.VISIBLE);
+                                                    LinearLayout parent = (LinearLayout) cardView.getParent().getParent();
+                                                    parent.removeView(outer);
+                                                    completedData.addView(outer);
                                                     getFeedBack(taskname, taskid, 1, seekBar, completedLabel, buttons);
                                                 }
                                                 else
@@ -289,6 +302,11 @@ public class FragmentTasksClass extends Fragment{
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                TextView completedLabelTop = rootView.findViewById(R.id.completedlabeltop);
+                                                completedLabelTop.setVisibility(View.VISIBLE);
+                                                LinearLayout parent = (LinearLayout) cardView.getParent().getParent();
+                                                parent.removeView(outer);
+                                                completedData.addView(outer);
                                                 getFeedBack(taskname, taskid, (int)(stage - seekBar.getProgress()), seekBar, completedLabel, buttons);
                                             }
                                         })
