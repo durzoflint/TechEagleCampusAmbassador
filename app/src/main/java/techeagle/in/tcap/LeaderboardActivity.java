@@ -1,10 +1,15 @@
 package techeagle.in.tcap;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
@@ -74,19 +79,23 @@ public class LeaderboardActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
-            if(webPage.contains("<br>"))
+            int i = 0;
+            while(webPage.contains("<br>"))
             {
-                int i = 0;
-                while (i < 10)
+                int index = webPage.indexOf("<br>");
+                String name = webPage.substring(0, index);
+                webPage = webPage.substring(index + 4);
+                index = webPage.indexOf("<br>");
+                String userpoints = webPage.substring(0, index);
+                webPage = webPage.substring(index + 4);
+                index = webPage.indexOf("<br>");
+                String image = webPage.substring(0, index);
+                webPage = webPage.substring(index + 4);
+                if (i < 10)
                 {
-                    int index = webPage.indexOf("<br>");
                     TextView nametv = findViewById(ids[i][0]);
-                    nametv.setText(webPage.substring(0, index));
-                    webPage = webPage.substring(index + 4);
-                    index = webPage.indexOf("<br>");
+                    nametv.setText(name);
                     TextView pointstv = findViewById(ids[i][1]);
-                    String userpoints = webPage.substring(0, index);
                     if (userpoints.equals("0"))
                     {
                         View v = (View)pointstv.getParent().getParent();
@@ -94,19 +103,40 @@ public class LeaderboardActivity extends AppCompatActivity {
                     }
                     else
                         pointstv.setText("Points : " + userpoints);
-                    webPage = webPage.substring(index + 4);
-                    index = webPage.indexOf("<br>");
-                    String image = webPage.substring(0, index);
+
                     if (!Objects.equals(image, "")) {
                         CircleImageView civ = findViewById(ids[i][2]);
                         Picasso.with(LeaderboardActivity.this).load(image).into(civ);
                     }
-                    webPage = webPage.substring(index + 4);
-                    i++;
                 }
+                else
+                {
+                    Context context = LeaderboardActivity.this;
+                    LinearLayout rankL = findViewById(R.id.rank);
+                    LinearLayout nameL = findViewById(R.id.name);
+                    LinearLayout pointsL = findViewById(R.id.points);
+                    TextView ranktv = new TextView(context);
+                    ranktv.setTextColor(Color.WHITE);
+                    ranktv.setText((i+1) + "");
+                    ranktv.setGravity(Gravity.CENTER_HORIZONTAL);
+                    ranktv.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
+                    rankL.addView(ranktv);
+                    TextView nametv = new TextView(context);
+                    nametv.setTextColor(Color.WHITE);
+                    nametv.setText(name);
+                    nametv.setGravity(Gravity.CENTER_HORIZONTAL);
+                    nametv.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
+                    nameL.addView(nametv);
+                    TextView pointstv = new TextView(context);
+                    pointstv.setTextColor(Color.WHITE);
+                    pointstv.setText(userpoints);
+                    pointstv.setGravity(Gravity.CENTER_HORIZONTAL);
+                    pointstv.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
+                    pointsL.addView(pointstv);
+                }
+                i++;
             }
-            else
-                Toast.makeText(LeaderboardActivity.this, "No data available.", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
     }
 }
