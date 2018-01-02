@@ -23,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LeaderboardActivity extends AppCompatActivity {
     int ids[][];
+    String email = HomeActivity.username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +84,9 @@ public class LeaderboardActivity extends AppCompatActivity {
             while(webPage.contains("<br>"))
             {
                 int index = webPage.indexOf("<br>");
+                String username = webPage.substring(0, index);
+                webPage = webPage.substring(index + 4);
+                index = webPage.indexOf("<br>");
                 String name = webPage.substring(0, index);
                 webPage = webPage.substring(index + 4);
                 index = webPage.indexOf("<br>");
@@ -111,6 +115,8 @@ public class LeaderboardActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    if (name.isEmpty())
+                        continue;
                     Context context = LeaderboardActivity.this;
                     LinearLayout rankL = findViewById(R.id.rank);
                     LinearLayout nameL = findViewById(R.id.name);
@@ -133,6 +139,12 @@ public class LeaderboardActivity extends AppCompatActivity {
                     pointstv.setGravity(Gravity.CENTER_HORIZONTAL);
                     pointstv.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
                     pointsL.addView(pointstv);
+                    if (username.equals(email))
+                    {
+                        ranktv.setTextColor(getResources().getColor(R.color.colorAccent));
+                        nametv.setTextColor(getResources().getColor(R.color.colorAccent));
+                        pointstv.setTextColor(getResources().getColor(R.color.colorAccent));
+                    }
                 }
                 i++;
             }
