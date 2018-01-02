@@ -112,6 +112,13 @@ public class LeaderboardActivity extends AppCompatActivity {
                         CircleImageView civ = findViewById(ids[i][2]);
                         Picasso.with(LeaderboardActivity.this).load(image).into(civ);
                     }
+                    if (username.equals(email))
+                    {
+                        View v = (View)nametv.getParent().getParent();
+                        v.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        nametv.setTextColor(Color.WHITE);
+                        pointstv.setTextColor(Color.WHITE);
+                    }
                 }
                 else
                 {
@@ -141,9 +148,9 @@ public class LeaderboardActivity extends AppCompatActivity {
                     pointsL.addView(pointstv);
                     if (username.equals(email))
                     {
-                        ranktv.setTextColor(getResources().getColor(R.color.colorAccent));
-                        nametv.setTextColor(getResources().getColor(R.color.colorAccent));
-                        pointstv.setTextColor(getResources().getColor(R.color.colorAccent));
+                        ranktv.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        nametv.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        pointstv.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     }
                 }
                 i++;

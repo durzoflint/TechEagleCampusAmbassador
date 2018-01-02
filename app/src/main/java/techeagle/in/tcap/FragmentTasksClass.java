@@ -46,7 +46,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentTasksClass extends Fragment{
     View rootView;
     CustomGauge myGauge;
-    TextView totalpercentage, userPoints, userRank;
+    TextView totalpercentage, userPoints;
     String username="", imageuri="", name="";
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_tasks, container, false);
@@ -56,7 +56,6 @@ public class FragmentTasksClass extends Fragment{
         imageuri = HomeActivity.imageuri;
         name = HomeActivity.nameOfUser;
         userPoints = HomeActivity.userpoints;
-        userRank = HomeActivity.userrank;
         new FetchTasks().execute(username);
         new FetchPointsAndProgress().execute(username);
         return rootView;
@@ -523,7 +522,6 @@ public class FragmentTasksClass extends Fragment{
                 myGauge.setValue(totalprogress);
                 totalpercentage.setText(myGauge.getValue()+"%");
                 userPoints.setText("Points\n" + points);
-                userRank.setText("Rank\n" + rank);
             }
             else
                 Toast.makeText(getActivity(), "Some Error Occured.", Toast.LENGTH_LONG).show();
