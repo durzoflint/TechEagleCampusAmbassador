@@ -240,7 +240,6 @@ public class FragmentTasksClass extends Fragment{
                     detailsLabel.setText("Details : " + details);
                     detailsLabel.setPadding(8,0,8,8);
                     detailsLabel.setTextSize(18);
-                    //detailsLabel.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     inner.addView(detailsLabel);
                     if (fileURI.length() > 0)
                     {
@@ -274,7 +273,7 @@ public class FragmentTasksClass extends Fragment{
                             public void onClick(View view) {
                                 new AlertDialog.Builder(context)
                                         .setTitle("Confirm Progress")
-                                        .setMessage("Are you sure you?")
+                                        .setMessage("Are you sure you have completed one more stage?")
                                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -326,6 +325,24 @@ public class FragmentTasksClass extends Fragment{
                         buttons.addView(completedAll);
                         inner.addView(buttons);
                     }
+                    TextView submitDetails = new TextView(context);
+                    submitDetails.setText("Submit Details");
+                    submitDetails.setPadding(16,16,16,16);
+                    submitDetails.setTextSize(16);
+                    submitDetails.setTextColor(getResources().getColor(R.color.colorAccent));
+                    submitDetails.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                            intent.putExtra("taskname", taskname);
+                            intent.putExtra("username", username);
+                            intent.putExtra("taskid", taskid);
+                            intent.putExtra("direct","yes");
+                            intent.putExtra("query","no");
+                            startActivity(intent);
+                        }
+                    });
+                    inner.addView(submitDetails);
                     TextView feedback = new TextView(context);
                     feedback.setText("Ask a question");
                     feedback.setPadding(16,16,16,16);
@@ -339,6 +356,7 @@ public class FragmentTasksClass extends Fragment{
                             intent.putExtra("username", username);
                             intent.putExtra("taskid", taskid);
                             intent.putExtra("direct","yes");
+                            intent.putExtra("query","yes");
                             startActivity(intent);
                         }
                     });
@@ -371,6 +389,7 @@ public class FragmentTasksClass extends Fragment{
             intent.putExtra("username", username);
             intent.putExtra("taskid", taskid);
             intent.putExtra("progress", progress+"");
+            intent.putExtra("query","no");
             int seekbarId = View.generateViewId();
             seekBar.setId(seekbarId);
             intent.putExtra("seekbar", seekbarId + "");

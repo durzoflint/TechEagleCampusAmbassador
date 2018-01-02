@@ -20,12 +20,11 @@ import java.net.URL;
 
 public class FeedbackActivity extends AppCompatActivity {
     Intent intent;
-    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "", direct="";
+    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "", direct="", query="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
-        setTitle("Feedback");
         intent = getIntent();
         direct = intent.getStringExtra("direct");
         taskId = intent.getStringExtra("taskid");
@@ -33,6 +32,11 @@ public class FeedbackActivity extends AppCompatActivity {
         myseekbar = intent.getStringExtra("seekbar");
         completedlabel = intent.getStringExtra("completedLabel");
         mybuttons = intent.getStringExtra("buttons");
+        query = intent.getStringExtra("query");
+        if (query.equals("no"))
+            setTitle("Submit Details");
+        else
+            setTitle("Submit Query");
         final String username = intent.getStringExtra("username");
         String taskName = intent.getStringExtra("taskname");
         String displayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -49,7 +53,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 if (feed.isEmpty())
                     Toast.makeText(FeedbackActivity.this, "Empty Feedback not Allowed.", Toast.LENGTH_SHORT).show();
                 else
-                    new SubmitFeedback().execute(username, taskId, feed);
+                    new SubmitFeedback().execute(username, taskId, feed, query);
             }
         });
     }
@@ -69,7 +73,7 @@ public class FeedbackActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"submitfeedback.php?username="+strings[0]+"&taskid="+strings[1]+"&feedback="+ Uri.encode(strings[2]);
+                String myURL = baseUrl+"submitfeedback.php?username="+strings[0]+"&taskid="+strings[1]+"&feedback="+ Uri.encode(strings[2])+"&query="+strings[3];
                 myURL = myURL.replaceAll("\'", "%27");
                 myURL = myURL.replaceAll("\'", "%22");
                 myURL = myURL.replaceAll("\\(", "%28");
