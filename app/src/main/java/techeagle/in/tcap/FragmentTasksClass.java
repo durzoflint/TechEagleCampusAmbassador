@@ -324,10 +324,14 @@ public class FragmentTasksClass extends Fragment{
                         buttons.addView(completedAll);
                         inner.addView(buttons);
                     }
+                    LinearLayout feedbackL = new LinearLayout(context);
+                    feedbackL.setLayoutParams(matchParams);
                     TextView submitDetails = new TextView(context);
                     submitDetails.setText("Submit Details");
+                    submitDetails.setLayoutParams(matchParams);
                     submitDetails.setPadding(16,16,16,16);
                     submitDetails.setTextSize(16);
+                    submitDetails.setGravity(Gravity.START);
                     submitDetails.setTextColor(getResources().getColor(R.color.colorAccent));
                     submitDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -341,9 +345,11 @@ public class FragmentTasksClass extends Fragment{
                             startActivity(intent);
                         }
                     });
-                    inner.addView(submitDetails);
+                    feedbackL.addView(submitDetails);
                     TextView feedback = new TextView(context);
+                    feedback.setLayoutParams(matchParams);
                     feedback.setText("Ask a question");
+                    feedback.setGravity(Gravity.END);
                     feedback.setPadding(16,16,16,16);
                     feedback.setTextSize(16);
                     feedback.setTextColor(Color.RED);
@@ -359,7 +365,8 @@ public class FragmentTasksClass extends Fragment{
                             startActivity(intent);
                         }
                     });
-                    inner.addView(feedback);
+                    feedbackL.addView(feedback);
+                    inner.addView(feedbackL);
                     mid.addView(inner);
                     cardView.addView(mid);
                     outer.addView(cardView);
