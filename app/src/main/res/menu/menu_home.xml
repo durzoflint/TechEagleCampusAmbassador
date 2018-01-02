@@ -2,11 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="techeagle.in.tcap.HomeActivity">
-    <!--item
-        android:icon="@drawable/logogrey"
+    <item
+        android:id="@+id/sync"
+        android:icon="@android:drawable/ic_popup_sync"
         android:orderInCategory="0"
-        android:title="TechEagle"
-        app:showAsAction="always" /-->
+        android:title="Sync"
+        app:showAsAction="always" />
     <item
         android:id="@+id/leaderboard"
         android:orderInCategory="100"

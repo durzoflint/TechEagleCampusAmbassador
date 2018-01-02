@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private Boolean isFabOpen = false;
+    private Boolean isFabOpen = false, loginDialogShow = true;
     FloatingActionButton fab1, fab2, fab3, fab4, fab5, fab6;
     private Animation fab_open, fab_close, fade_in, fade_out;
     static String username = "", imageuri = "", nameOfUser = "", tcapID = "";
@@ -62,12 +62,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Window window = HomeActivity.this.getWindow();
-        // clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            // finally change the color
             window.setStatusBarColor(ContextCompat.getColor(HomeActivity.this, R.color.colorPrimaryDark));
         }
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -243,6 +240,10 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.sync:
+                loginDialogShow = false;
+                new Login().execute(username);
+                break;
             case R.id.leaderboard:
                 startActivity(new Intent(HomeActivity.this, LeaderboardActivity.class));
                 break;
@@ -323,7 +324,8 @@ public class HomeActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(HomeActivity.this, "Please Wait!","Validating Login!");
+            if (loginDialogShow)
+                progressDialog = ProgressDialog.show(HomeActivity.this, "Please Wait!","Validating Login!");
             super.onPreExecute();
         }
         @Override
@@ -355,7 +357,6 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
             if(webPage.contains("login successful<br>"))
             {
                 int brI = webPage.indexOf("<br>");
@@ -397,6 +398,8 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Invalid Login.", Toast.LENGTH_LONG).show();
                 AuthUI.getInstance().signOut(HomeActivity.this);
             }
+            if (loginDialogShow)
+                progressDialog.dismiss();
         }
     }
 
