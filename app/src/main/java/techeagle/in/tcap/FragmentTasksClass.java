@@ -245,7 +245,7 @@ public class FragmentTasksClass extends Fragment{
                         TextView attachedFile = new TextView(context);
                         attachedFile.setText("Download attached file");
                         attachedFile.setTextColor(getResources().getColor(R.color.colorAccent));
-                        detailsLabel.setTextSize(16);
+                        attachedFile.setTextSize(16);
                         attachedFile.setPadding(16,16,16,16);
                         attachedFile.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -255,6 +255,22 @@ public class FragmentTasksClass extends Fragment{
                         });
                         inner.addView(attachedFile);
                     }
+                    TextView uploadImage = new TextView(context);
+                    uploadImage.setText("Upload Image/Screenshot");
+                    uploadImage.setTextColor(getResources().getColor(R.color.colorAccent));
+                    uploadImage.setTextSize(16);
+                    uploadImage.setPadding(16,16,16,16);
+                    uploadImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), UploadImageActivity.class);
+                            intent.putExtra("username", username);
+                            intent.putExtra("taskid", taskid);
+                            intent.putExtra("stage", seekBar.getProgress());
+                            startActivity(intent);
+                        }
+                    });
+                    inner.addView(uploadImage);
                     if(com < stage && expired.equals("no"))
                     {
                         final LinearLayout buttons = new LinearLayout(context);
