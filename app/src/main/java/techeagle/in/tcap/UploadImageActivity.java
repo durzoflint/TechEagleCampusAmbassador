@@ -112,7 +112,7 @@ public class UploadImageActivity extends AppCompatActivity {
             super.onPostExecute(string1);
             progressDialog.dismiss();
             Toast.makeText(UploadImageActivity.this,string1,Toast.LENGTH_LONG).show();
-            imageView.setImageResource(android.R.color.transparent);
+            finish();
         }
     }
 
