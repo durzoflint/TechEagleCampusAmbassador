@@ -358,6 +358,7 @@ public class FragmentTasksClass extends Fragment{
                             intent.putExtra("taskid", taskid);
                             intent.putExtra("direct","yes");
                             intent.putExtra("query","no");
+                            intent.putExtra("text","Provide details if asked in this Task");
                             startActivity(intent);
                         }
                     });
@@ -378,6 +379,7 @@ public class FragmentTasksClass extends Fragment{
                             intent.putExtra("taskid", taskid);
                             intent.putExtra("direct","yes");
                             intent.putExtra("query","yes");
+                            intent.putExtra("text", "Submit your query related to this Task");
                             startActivity(intent);
                         }
                     });
@@ -412,6 +414,7 @@ public class FragmentTasksClass extends Fragment{
             intent.putExtra("taskid", taskid);
             intent.putExtra("progress", progress+"");
             intent.putExtra("query","no");
+            intent.putExtra("text","Explain, What have you done to get this task completed?");
             int seekbarId = View.generateViewId();
             seekBar.setId(seekbarId);
             intent.putExtra("seekbar", seekbarId + "");

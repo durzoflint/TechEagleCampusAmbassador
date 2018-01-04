@@ -20,7 +20,7 @@ import java.net.URL;
 
 public class FeedbackActivity extends AppCompatActivity {
     Intent intent;
-    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "", direct="", query="";
+    String taskId = "", myprogress = "", myseekbar = "", completedlabel = "", mybuttons = "", direct="", query="", text="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +33,8 @@ public class FeedbackActivity extends AppCompatActivity {
         completedlabel = intent.getStringExtra("completedLabel");
         mybuttons = intent.getStringExtra("buttons");
         query = intent.getStringExtra("query");
+        TextView text = findViewById(R.id.text);
+        text.setText(intent.getStringExtra("text"));
         if (query.equals("no"))
             setTitle("Submit Details");
         else
