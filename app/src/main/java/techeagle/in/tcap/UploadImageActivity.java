@@ -37,7 +37,7 @@ public class UploadImageActivity extends AppCompatActivity {
     Button SelectImageGallery, UploadImageServer;
     ImageView imageView;
     ProgressDialog progressDialog ;
-    String imageName;
+    String imageName, username="", taskid="";
     String ServerUploadPath ="http://techeagle.in/tcap/v2/upload_image.php" ;
 
     @Override
@@ -45,8 +45,8 @@ public class UploadImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
         Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
-        String taskid = intent.getStringExtra("taskid");
+        username = intent.getStringExtra("username");
+        taskid = intent.getStringExtra("taskid");
         int prog = intent.getIntExtra("stage", 0);
         imageName = username+"_"+taskid+"_"+prog+"_"+ UUID.randomUUID().toString().replace("-", "");
         imageView = findViewById(R.id.imageView);
@@ -101,6 +101,8 @@ public class UploadImageActivity extends AppCompatActivity {
             final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
             HashMapParams.put("image_name", imageName);
             HashMapParams.put("image", ConvertImage);
+            HashMapParams.put("username", username);
+            HashMapParams.put("taskid", taskid);
         }
         @Override
         protected String doInBackground(Void... params) {
