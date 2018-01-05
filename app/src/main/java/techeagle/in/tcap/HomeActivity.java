@@ -253,6 +253,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.aboutapp:
                 startActivity(new Intent(HomeActivity.this, AboutAppActivity.class));
                 break;
+            case R.id.guidlines:
+                startActivity(new Intent(HomeActivity.this, GuidelinesActivity.class));
+                break;
             case R.id.logout:
                 new AlertDialog.Builder(this)
                         .setTitle("Are you sure you want to Logout?")
