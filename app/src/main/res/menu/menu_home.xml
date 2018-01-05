@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="techeagle.in.tcap.HomeActivity">
     <item
+        android:id="@+id/bell"
+        android:icon="@drawable/ic_menu_notifications"
+        android:orderInCategory="0"
+        android:title="Bell"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/sync"
         android:icon="@android:drawable/ic_popup_sync"
         android:orderInCategory="0"
