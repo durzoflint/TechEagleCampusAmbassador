@@ -243,7 +243,7 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         MenuItem menuItem = menu.findItem(R.id.bell);
         LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
-        new Utils2().setBadgeCount(this, icon, 2);
+        new Utils2().setBadgeCount(this, icon, 15);
         return true;
     }
 
@@ -325,10 +325,10 @@ public class HomeActivity extends AppCompatActivity {
 
         public BadgeDrawable(Context context) {
             //mTextSize = context.getResources().getDimension(R.dimen.badge_text_size);
-            mTextSize = 12F;
+            mTextSize = 26F;
 
             mBadgePaint = new Paint();
-            mBadgePaint.setColor(Color.RED);
+            mBadgePaint.setColor(getResources().getColor(R.color.colorAccent));
             mBadgePaint.setAntiAlias(true);
             mBadgePaint.setStyle(Paint.Style.FILL);
 
@@ -351,9 +351,12 @@ public class HomeActivity extends AppCompatActivity {
             float height = bounds.bottom - bounds.top;
 
             // Position the badge in the top-right quadrant of the icon.
-            float radius = ((Math.min(width, height) / 2) - 1) / 2;
-            float centerX = width - radius - 1;
-            float centerY = radius + 1;
+            float radius = ((Math.min(width, height) / 2) - 1) / 1.5f;
+            //float radius = ((Math.min(width, height) / 2) - 1) / 1.5f;
+            float centerX = width - radius/2 - 1;
+            //float centerX = width - radius - 1;
+            float centerY = radius*0.5f + 1;
+            //float centerY = radius + 1;
 
             // Draw badge circle.
             canvas.drawCircle(centerX, centerY, radius, mBadgePaint);
