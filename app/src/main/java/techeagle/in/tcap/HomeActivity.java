@@ -66,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
     private Animation fab_open, fab_close, fade_in, fade_out;
     static String username = "", imageuri = "", nameOfUser = "", tcapID = "";
     FragmentTasksClass fragmentTasksClass;
-    LayerDrawable icon;
     Menu mymenu;
     int notifCount = 0;
     @Override
@@ -245,7 +244,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         MenuItem menuItem = menu.findItem(R.id.bell);
-        icon = (LayerDrawable) menuItem.getIcon();
+        LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
         mymenu = menu;
         new Utils2().setBadgeCount(HomeActivity.this, icon, notifCount);
         return true;
@@ -256,6 +255,11 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.bell:
+                Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
+                break;
             case R.id.sync:
                 loginDialogShow = false;
                 new Login().execute(username);

@@ -53,7 +53,8 @@
         <activity android:name=".AboutTEActivity" />
         <activity android:name=".AboutAppActivity" />
         <activity android:name=".UploadImageActivity" />
-        <activity android:name=".GuidelinesActivity"></activity>
+        <activity android:name=".GuidelinesActivity" />
+        <activity android:name=".NotificationActivity"></activity>
     </application>
 
 </manifest>
