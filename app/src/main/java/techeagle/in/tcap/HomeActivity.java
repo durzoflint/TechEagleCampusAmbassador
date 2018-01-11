@@ -66,6 +66,9 @@ public class HomeActivity extends AppCompatActivity {
     private Animation fab_open, fab_close, fade_in, fade_out;
     static String username = "", imageuri = "", nameOfUser = "", tcapID = "";
     FragmentTasksClass fragmentTasksClass;
+    LayerDrawable icon;
+    Menu mymenu;
+    int notifCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -242,8 +245,9 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         MenuItem menuItem = menu.findItem(R.id.bell);
-        LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
-        new Utils2().setBadgeCount(this, icon, 15);
+        icon = (LayerDrawable) menuItem.getIcon();
+        mymenu = menu;
+        new Utils2().setBadgeCount(HomeActivity.this, icon, notifCount);
         return true;
     }
 
@@ -434,6 +438,44 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
     }
 
+    private class FetchNotificationCount extends AsyncTask<String,Void,Void> {
+        String webPage="";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
+        @Override
+        protected Void doInBackground(String... strings){
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try
+            {
+                String myURL = baseUrl+"getnotificationcount.php?username="+strings[0];
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data=br.readLine()) != null)
+                    webPage=webPage+data;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mymenu.clear();
+            notifCount = Integer.parseInt(webPage);
+            onCreateOptionsMenu(mymenu);
+        }
+    }
+
     private class Login extends AsyncTask<String,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/v2/";
@@ -507,6 +549,7 @@ public class HomeActivity extends AppCompatActivity {
                     ViewPager mViewPager = findViewById(R.id.container);
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setOffscreenPageLimit(1);
+                    new FetchNotificationCount().execute(username);
                 }
             }
             else
