@@ -22,10 +22,10 @@ public class GuidelinesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guidelines);
         setTitle("Guidelines");
-        new FetchGuidelines().execute();
+        //new FetchGuidelines().execute();
     }
 
-    private class FetchGuidelines extends AsyncTask<Void,Void,Void> {
+    /*private class FetchGuidelines extends AsyncTask<Void,Void,Void> {
         String webPage="";
         String baseUrl = "http://www.techeagle.in/tcap/v2/";
         ProgressDialog progressDialog;
@@ -67,5 +67,5 @@ public class GuidelinesActivity extends AppCompatActivity {
             TextView text = findViewById(R.id.text);
             text.setText(webPage);
         }
-    }
+    }*/
 }
