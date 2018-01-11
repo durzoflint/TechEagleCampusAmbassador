@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ProfileActivity extends AppCompatActivity {
-    EditText firstname, lastname, number, dob, address;
+    EditText firstname, lastname, number, dob, address, city, interests;
     Spinner gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +38,18 @@ public class ProfileActivity extends AppCompatActivity {
         dob = findViewById(R.id.dob);
         gender = findViewById(R.id.gender);
         address = findViewById(R.id.address);
+        city = findViewById(R.id.city);
+        interests = findViewById(R.id.interests);
         new FetchUserDetails().execute(username);
         Button update = findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (formIsValid())
-                    new UpdateUserDetails().execute(username, firstname.getText().toString().trim(), lastname.getText().toString(),
-                            number.getText().toString(), dob.getText().toString(), gender.getSelectedItem().toString(), address.getText().toString());
+                    new UpdateUserDetails().execute(username, firstname.getText().toString().trim(),
+                            lastname.getText().toString(), number.getText().toString(), dob.getText().toString(),
+                            gender.getSelectedItem().toString(), address.getText().toString(),
+                            city.getText().toString(), interests.getText().toString());
             }
         });
     }
@@ -74,6 +78,11 @@ public class ProfileActivity extends AppCompatActivity {
         if (address.getText().toString().trim().isEmpty())
         {
             Toast.makeText(this, "Address cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (city.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "City cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -114,7 +123,7 @@ public class ProfileActivity extends AppCompatActivity {
         ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
-            progressDialog = ProgressDialog.show(ProfileActivity.this, "Please Wait!","Fetching Latest Data!");
+            progressDialog = ProgressDialog.show(ProfileActivity.this, "Please Wait!","Updating!");
             super.onPreExecute();
         }
         @Override
@@ -123,8 +132,9 @@ public class ProfileActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             try
             {
-                String myURL = baseUrl+"updateuserdetails.php?username="+strings[0]+"&firstname="+strings[1]+"&lastname="+strings[2]
-                        +"&number="+strings[3]+"&dob="+strings[4]+"&gender="+strings[5]+"&address="+strings[6];
+                String myURL = baseUrl+"updateuserdetails.php?username="+strings[0]+"&firstname="+strings[1]
+                        +"&lastname="+strings[2]+"&number="+strings[3]+"&dob="+strings[4]+"&gender="+strings[5]
+                        +"&address="+strings[6]+"&city="+strings[7]+"&interests="+strings[8];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -223,6 +233,12 @@ public class ProfileActivity extends AppCompatActivity {
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
             address.setText(webPage.substring(0, brI));
+            webPage = webPage.substring(brI+4);
+            brI = webPage.indexOf("<br>");
+            city.setText(webPage.substring(0, brI));
+            webPage = webPage.substring(brI+4);
+            brI = webPage.indexOf("<br>");
+            interests.setText(webPage.substring(0, brI));
             webPage = webPage.substring(brI+4);
         }
     }
