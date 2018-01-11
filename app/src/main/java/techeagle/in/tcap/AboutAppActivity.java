@@ -18,7 +18,7 @@ public class AboutAppActivity extends AppCompatActivity {
         redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://techeagle.in/tcap/redirecttovideo.php")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=plsw0pR4wJA&feature=youtu.be")));
             }
         });
     }
