@@ -259,6 +259,7 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
                 intent.putExtra("username", username);
                 startActivity(intent);
+                new SetNotifReadDate().execute(username);
                 break;
             case R.id.sync:
                 loginDialogShow = false;
@@ -563,6 +564,43 @@ public class HomeActivity extends AppCompatActivity {
             }
             if (loginDialogShow)
                 progressDialog.dismiss();
+        }
+    }
+
+    private class SetNotifReadDate extends AsyncTask<String,Void,Void> {
+        String webPage="";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
+        @Override
+        protected Void doInBackground(String... strings){
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try
+            {
+                String myURL = baseUrl+"setnotificationreaddate.php?username="+strings[0];
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data=br.readLine()) != null)
+                    webPage=webPage+data;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new FetchNotificationCount().execute(username);
         }
     }
 
