@@ -15,6 +15,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -134,7 +137,6 @@ public class FragmentTasksClass extends Fragment{
                     webPage = webPage.substring(brI + 4);
                     brI = webPage.indexOf("<br><br>");
                     String details = webPage.substring(0, brI);
-                    details = details.replaceAll("<br />", "\n");
                     webPage = webPage.substring(brI + 8);
                     brI = webPage.indexOf("<br>");
                     String file = webPage.substring(0, brI);
@@ -220,7 +222,7 @@ public class FragmentTasksClass extends Fragment{
                     seekBar.setProgress((int)com);
                     mid.addView(seekBar);
                     final int id = View.generateViewId();
-                    LinearLayout inner = new LinearLayout(context);
+                    final LinearLayout inner = new LinearLayout(context);
                     inner.setLayoutParams(matchParams);
                     inner.setOrientation(LinearLayout.VERTICAL);
                     inner.setVisibility(View.GONE);
@@ -236,9 +238,17 @@ public class FragmentTasksClass extends Fragment{
                     rewardPointsLabel.setTextSize(18);
                     inner.addView(rewardPointsLabel);
                     TextView detailsLabel = new TextView(context);
-                    detailsLabel.setText("Details : " + details);
+                    detailsLabel.setClickable(true);
+                    detailsLabel.setMovementMethod(LinkMovementMethod.getInstance());
+                    detailsLabel.setText(Html.fromHtml("Details : " + details));
                     detailsLabel.setPadding(8,0,8,8);
                     detailsLabel.setTextSize(18);
+                    detailsLabel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            inner.setVisibility(View.GONE);
+                        }
+                    });
                     inner.addView(detailsLabel);
                     if (fileURI.length() > 0)
                     {
