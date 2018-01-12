@@ -11,10 +11,49 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cardview_light_background"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/latestlabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="Latest Notifications"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/newnotif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:background="@color/colorAccent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="Previous Notifications"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/oldnotif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:background="@color/cardview_light_background"
+                android:orientation="vertical"></LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>

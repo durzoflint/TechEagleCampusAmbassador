@@ -258,6 +258,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.bell:
                 Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
                 intent.putExtra("username", username);
+                intent.putExtra("notifcount", notifCount);
                 startActivity(intent);
                 new SetNotifReadDate().execute(username);
                 break;
