@@ -9,4 +9,53 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+    <string-array name="states_array">
+        <item>Andhra Pradesh (AP)</item>
+        <item>Arunachal Pradesh (AR)</item>
+        <item>Assam (AS)</item>
+        <item>Bihar (BR)</item>
+        <item>Chhattisgarh (CG)</item>
+        <item>Goa (GA)</item>
+        <item>Gujarat (GJ)</item>
+        <item>Haryana (HR)</item>
+        <item>Himachal Pradesh (HP)</item>
+        <item>Jammu and Kashmir (JK)</item>
+        <item>Jharkhand (JH)</item>
+        <item>Karnataka (KA)</item>
+        <item>Kerala (KL)</item>
+        <item>Madhya Pradesh (MP)</item>
+        <item>Maharashtra (MH)</item>
+        <item>Manipur (MN)</item>
+        <item>Meghalaya (ML)</item>
+        <item>Mizoram (MZ)</item>
+        <item>Nagaland (NL)</item>
+        <item>Odisha(OR)</item>
+        <item>Punjab (PB)</item>
+        <item>Rajasthan (RJ)</item>
+        <item>Sikkim (SK)</item>
+        <item>Tamil Nadu (TN)</item>
+        <item>Telangana (TS)</item>
+        <item>Tripura (TR)</item>
+        <item>Uttar Pradesh (UP)</item>
+        <item>Uttarakhand (UK)</item>
+        <item>West Bengal (WB)</item>
+        <item>Andaman and Nicobar Islands(AN)</item>
+        <item>Chandigarh (CH)</item>
+        <item>Dadra and Nagar Haveli (DN)</item>
+        <item>Daman and Diu (DD)</item>
+        <item>National Capital Territory of Delhi (DL)</item>
+        <item>Lakshadweep (LD)</item>
+        <item>Pondicherry (PY)</item>
+    </string-array>
+    <string-array name="interests_array">
+        <item>Full stack website developer</item>
+        <item>Full Stack App developer</item>
+        <item>Software Development</item>
+        <item>Blog Writer-technical</item>
+        <item>Blog Writer-Non-technical</item>
+        <item>Graphics/Poster/Creative Designer</item>
+        <item>VFX/Video Maker and Editor</item>
+        <item>Photography/Video Graphy</item>
+        <item>Digital Marketing/FB Paid Ads/ Adwords</item>
+    </string-array>
 </resources>
