@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import java.net.URL;
 
 public class ProfileActivity extends AppCompatActivity {
     EditText firstname, lastname, number, dob, address;
-    Spinner gender, states, interests;
+    Spinner gender, states;
     String statesArray[] = {"Andhra Pradesh (AP)","Arunachal Pradesh (AR)","Assam (AS)","Bihar (BR)",
             "Chhattisgarh (CG)","Goa (GA)","Gujarat (GJ)","Haryana (HR)","Himachal Pradesh (HP)",
             "Jammu and Kashmir (JK)","Jharkhand (JH)","Karnataka (KA)","Kerala (KL)","Madhya Pradesh (MP)",
@@ -31,6 +32,8 @@ public class ProfileActivity extends AppCompatActivity {
     String interestsArray[] = {"Full stack website developer", "Full Stack App developer", "Software Development",
             "Blog Writer-technical", "Blog Writer-Non-technical", "Graphics/Poster/Creative Designer",
             "VFX/Video Maker & Editor", "Photography/Video Graphy", "Digital Marketing/FB Paid Ads/ Adwords"};
+    int interestsIds[] = {R.id.checkBox1,R.id.checkBox2,R.id.checkBox3,R.id.checkBox4,R.id.checkBox5,
+            R.id.checkBox6,R.id.checkBox7,R.id.checkBox8,R.id.checkBox9};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,17 +53,25 @@ public class ProfileActivity extends AppCompatActivity {
         gender = findViewById(R.id.gender);
         address = findViewById(R.id.address);
         states = findViewById(R.id.states);
-        interests = findViewById(R.id.interests);
         new FetchUserDetails().execute(username);
         Button update = findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (formIsValid())
+                {
+                    String interests = "";
+                    for (int i=0;i<interestsArray.length;i++)
+                    {
+                        CheckBox checkBox = findViewById(interestsIds[i]);
+                        if (checkBox.isChecked())
+                            interests = interests + "<" + interestsArray[i] + ">";
+                    }
                     new UpdateUserDetails().execute(username, firstname.getText().toString().trim(),
                             lastname.getText().toString(), number.getText().toString(), dob.getText().toString(),
                             gender.getSelectedItem().toString(), address.getText().toString(),
-                            states.getSelectedItem().toString(), interests.getSelectedItem().toString());
+                            states.getSelectedItem().toString(), interests);
+                }
             }
         });
     }
@@ -256,10 +267,10 @@ public class ProfileActivity extends AppCompatActivity {
             brI = webPage.indexOf("<br>");
             String interest = webPage.substring(0, brI);
             for(i=0;i<interestsArray.length;i++)
-                if (interest.equals(interestsArray[i]))
+                if (interest.contains("<"+interestsArray[i]+">"))
                 {
-                    interests.setSelection(i);
-                    break;
+                    CheckBox checkBox = findViewById(interestsIds[i]);
+                    checkBox.setChecked(true);
                 }
             webPage = webPage.substring(brI+4);
         }

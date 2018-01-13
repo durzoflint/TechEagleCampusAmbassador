@@ -47,15 +47,4 @@
         <item>Lakshadweep (LD)</item>
         <item>Pondicherry (PY)</item>
     </string-array>
-    <string-array name="interests_array">
-        <item>Full stack website developer</item>
-        <item>Full Stack App developer</item>
-        <item>Software Development</item>
-        <item>Blog Writer-technical</item>
-        <item>Blog Writer-Non-technical</item>
-        <item>Graphics/Poster/Creative Designer</item>
-        <item>VFX/Video Maker and Editor</item>
-        <item>Photography/Video Graphy</item>
-        <item>Digital Marketing/FB Paid Ads/ Adwords</item>
-    </string-array>
 </resources>
