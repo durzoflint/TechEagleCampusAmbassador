@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ProfileActivity extends AppCompatActivity {
-    EditText firstname, lastname, number, dob, address;
+    EditText firstname, lastname, number, dob, address, city;
     Spinner gender, states;
     String statesArray[] = {"Andhra Pradesh (AP)","Arunachal Pradesh (AR)","Assam (AS)","Bihar (BR)",
             "Chhattisgarh (CG)","Goa (GA)","Gujarat (GJ)","Haryana (HR)","Himachal Pradesh (HP)",
@@ -53,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
         gender = findViewById(R.id.gender);
         address = findViewById(R.id.address);
         states = findViewById(R.id.states);
+        city = findViewById(R.id.city);
         new FetchUserDetails().execute(username);
         Button update = findViewById(R.id.update);
         update.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     new UpdateUserDetails().execute(username, firstname.getText().toString().trim(),
                             lastname.getText().toString(), number.getText().toString(), dob.getText().toString(),
-                            gender.getSelectedItem().toString(), address.getText().toString(),
+                            gender.getSelectedItem().toString(), address.getText().toString(), city.getText().toString(),
                             states.getSelectedItem().toString(), interests);
                 }
             }
@@ -100,6 +101,11 @@ public class ProfileActivity extends AppCompatActivity {
         if (address.getText().toString().trim().isEmpty())
         {
             Toast.makeText(this, "Address cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (city.getText().toString().trim().isEmpty())
+        {
+            Toast.makeText(this, "City cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -151,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
             {
                 String myURL = baseUrl+"updateuserdetails.php?username="+strings[0]+"&firstname="+strings[1]
                         +"&lastname="+strings[2]+"&number="+strings[3]+"&dob="+strings[4]+"&gender="+strings[5]
-                        +"&address="+strings[6]+"&state="+strings[7]+"&interests="+strings[8];
+                        +"&address="+strings[6]+"&city="+strings[7]+"&state="+strings[8]+"&interests="+strings[9];
                 myURL = myURL.replaceAll(" ", "%20");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -252,6 +258,9 @@ public class ProfileActivity extends AppCompatActivity {
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
             address.setText(webPage.substring(0, brI));
+            webPage = webPage.substring(brI+4);
+            brI = webPage.indexOf("<br>");
+            city.setText(webPage.substring(0, brI));
             webPage = webPage.substring(brI+4);
             brI = webPage.indexOf("<br>");
             String state = webPage.substring(0, brI);

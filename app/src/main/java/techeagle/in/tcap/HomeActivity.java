@@ -204,6 +204,7 @@ public class HomeActivity extends AppCompatActivity {
                     status.setVisibility(View.VISIBLE);
             }
         });
+        new CheckForUpdate().execute();
     }
 
     public void animateFAB() {
@@ -479,6 +480,63 @@ public class HomeActivity extends AppCompatActivity {
             mymenu.clear();
             notifCount = Integer.parseInt(webPage);
             onCreateOptionsMenu(mymenu);
+        }
+    }
+
+    private class CheckForUpdate extends AsyncTask<Void,Void,Void> {
+        String webPage="";
+        String baseUrl = "http://www.techeagle.in/tcap/v2/";
+        @Override
+        protected Void doInBackground(Void... voids){
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try
+            {
+                String myURL = baseUrl+"forceupdate.php";
+                myURL = myURL.replaceAll(" ", "%20");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br=new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data=br.readLine()) != null)
+                    webPage=webPage+data;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            int versionCode = BuildConfig.VERSION_CODE;
+            if (versionCode < Integer.parseInt(webPage))
+            {
+                new AlertDialog.Builder(HomeActivity.this)
+                        .setTitle("Attention")
+                        .setMessage("The version of this app on your device seems outdated. Please update the app to proceed forward.")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+HomeActivity.this.getPackageName())));
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setCancelable(false).create().show();
+            }
         }
     }
 
